@@ -1,4 +1,4 @@
-package co.appbrewery.micard;
+package ro.duoline.workboard;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
