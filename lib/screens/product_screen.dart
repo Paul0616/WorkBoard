@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/print_data.dart';
+import 'package:work_board/screens/update_product_screen.dart';
 import 'package:work_board/widgets/products_list.dart';
 
 import '../constants.dart';
@@ -11,9 +12,7 @@ class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var products = Provider.of<PrintData>(context);
-//    var prod = ProductData();
-//
-//    print('${prod.printModel.paperFormat.widthL}');
+
     return Scaffold(
       backgroundColor: kColor2,
       body: Column(

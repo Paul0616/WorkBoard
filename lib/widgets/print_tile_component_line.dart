@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:work_board/screens/update_product_screen.dart';
 
 import '../constants.dart';
 
@@ -8,6 +9,7 @@ class PrintTileComponentLine extends StatelessWidget {
   final Color color;
   final bool canBeEdited;
   final bool showChecked;
+
 
   PrintTileComponentLine(
       {@required this.infos,
@@ -38,7 +40,28 @@ class PrintTileComponentLine extends StatelessWidget {
     }
     if (canBeEdited) {
       rowWidgets.add(
-        Icon(Icons.arrow_drop_down),
+        GestureDetector(
+          onTap: (){
+            showModalBottomSheet(
+              context: context,
+              builder: (context) =>
+                  SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery
+                            .of(context)
+                            .viewInsets
+                            .bottom,
+                      ),
+                      child: UpdateProductScreen(),
+                    ),
+                  ),
+            );
+          },
+          child: Icon(
+            Icons.arrow_drop_down,
+          ),
+        ),
       );
     }
 
@@ -54,8 +77,8 @@ class PrintTileComponentLine extends StatelessWidget {
         Text(
           description,
           style: TextStyle(
-            color: Colors.black54,
-//            fontSize: 10,
+            color: Colors.red,
+            fontSize: 10,
           ),
         ),
       );

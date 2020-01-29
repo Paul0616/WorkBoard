@@ -3,13 +3,15 @@ import 'package:flutter/cupertino.dart';
 import '../constants.dart';
 
 class PaperDimensions {
-  PaperFormatEnum paperFormat;
+  PaperFormatEnum format;
   double lengthH;
   double widthL;
 
   PaperDimensions(
-      {@required this.paperFormat, @required double L, @required double H}) {
+      {@required this.format, @required double L, @required double H}) {
     widthL = L;
     lengthH = H;
   }
+
+
 }

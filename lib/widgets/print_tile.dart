@@ -1,43 +1,67 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+
 import 'package:work_board/constants.dart';
+import 'package:work_board/models/print_model.dart';
+
 import 'package:work_board/widgets/print_tile_component_line.dart';
 
 class PrintTile extends StatelessWidget {
+  final PrintModel printModel;
+
+  PrintTile({this.printModel});
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
         children: <Widget>[
           PrintTileComponentLine(
-            infos: ['Tip hârtie: 80g/mp', '8.00 lei'],
+            infos: [
+              'Tip hârtie: ${printModel.getPaperTypeName()}',
+              '${printModel.value.toStringAsFixed(2)} lei'
+            ],
             color: kColor3,
             canBeEdited: false,
             showChecked: false,
           ),
           PrintTileComponentLine(
             infos: [
-              'Tiraj: 0',
+              'Tiraj: ${printModel.quantity.toStringAsFixed(0)} buc',
             ],
             canBeEdited: true,
             showChecked: false,
           ),
           PrintTileComponentLine(
             infos: [
-              'Format: A5',
-              'L(mm): 148',
-              'H(mm): 210',
+              'Format: ${EnumToString.parse(printModel.paperFormat.format)}',
+              'L(mm): ${printModel.paperFormat.widthL}',
+              'H(mm): ${printModel.paperFormat.lengthH}',
             ],
             canBeEdited: true,
             showChecked: false,
           ),
           PrintTileComponentLine(
             infos: [
-              'Încadrare în A3: 62 buc (8x7)+(6x1)',
+              'Adaugă tăieri: ${printModel.getA3FitCount()['cut']}',
+            ],
+            canBeEdited: true,
+            showChecked: true,
+          ),
+          PrintTileComponentLine1(
+            infos: ['Imprimare:'],
+            colorType: printModel.colorType,
+          ),
+          PrintTileComponentLine(
+            infos: [
+              'Încadrare în A3: ${printModel.getA3FitCount()['fitCount']} buc',
+              //62 buc (8x7)+(6x1)',
             ],
             canBeEdited: false,
             showChecked: false,
-            description: 'Încap 56 formate plus 1 fibra inversă',
+            description: '${printModel.getA3FitCount()['description']}',
           ),
           PrintTileComponentLine(
             infos: [
@@ -58,17 +82,6 @@ class PrintTile extends StatelessWidget {
             ],
             canBeEdited: false,
             showChecked: false,
-          ),
-          PrintTileComponentLine(
-            infos: [
-              'Adaugă tăieri: 24 tăieri',
-            ],
-            canBeEdited: true,
-            showChecked: true,
-          ),
-          PrintTileComponentLine1(
-            infos: ['Imprimare:'],
-            colorType: ColorType.OneFaceBlackWhiteOneFaceColor,
           ),
         ],
       ),

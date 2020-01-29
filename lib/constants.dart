@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:work_board/models/paper_dimension.dart';
+
 
 const kColor1 = Colors.white;
 const kColor2 = Colors.red;
@@ -55,14 +55,6 @@ enum PaperType {
   paperSpecial,
 }
 
-//const Map<PaperFormatEnum, PaperDimensions> kPaperFormatWidthL = {
-//  PaperFormatEnum.A3: PaperDimensions(L: 297.0, H: 420.0),
-//  PaperFormatEnum.A4: 210.0,
-//  PaperFormatEnum.A5: 148.0,
-//  PaperFormatEnum.A6: 105.0,
-//  PaperFormatEnum.Banner: 640.0,
-//  PaperFormatEnum.LxH: 40.0,
-//};
 
 enum PaperFormatEnum {
   A3,
