@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:work_board/models/print_data.dart';
 import 'package:work_board/widgets/products_list.dart';
 
 import '../constants.dart';
@@ -8,6 +10,10 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var products = Provider.of<PrintData>(context);
+//    var prod = ProductData();
+//
+//    print('${prod.printModel.paperFormat.widthL}');
     return Scaffold(
       backgroundColor: kColor2,
       body: Column(
@@ -35,7 +41,7 @@ class ProductScreen extends StatelessWidget {
                       children: <Widget>[
                         Icon(
                           Icons.dashboard,
-                          color: kColor1,
+                          color: kColor2,
                           size: 40.0,
                         ),
                         Text(
@@ -53,7 +59,7 @@ class ProductScreen extends StatelessWidget {
                   height: 10.0,
                 ),
                 Text(
-                  'Printuri Mari',
+                  'Printuri',
                   style: TextStyle(
                     fontFamily: 'Yanone Kaffeesatz',
                     fontSize: 50,
@@ -61,7 +67,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Valoare: 15.00',
+                  'Valoare: ${products.allPrintsValue} lei (${products.productCount} produse)',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
@@ -73,7 +79,11 @@ class ProductScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                bottom: 60.0,
+              ),
               decoration: BoxDecoration(
                   color: kColor1,
                   borderRadius: BorderRadius.only(

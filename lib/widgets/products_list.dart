@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:work_board/models/print_data.dart';
 import 'package:work_board/widgets/print_tile.dart';
 
 import '../constants.dart';
@@ -27,6 +28,7 @@ class ProductsList extends StatelessWidget {
 
     return ListView.builder(
       itemBuilder: (context, index) {
+        //final products = PrintData;
         return productTile;
       },
       itemCount: 3,
