@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:work_board/screens/update_product_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:work_board/models/print_data.dart';
+import 'package:work_board/models/print_model.dart';
+import 'package:work_board/screens/update_single_value_screen.dart';
 
 import '../constants.dart';
 
@@ -8,15 +11,18 @@ class PrintTileComponentLine extends StatelessWidget {
   final String description;
   final Color color;
   final bool canBeEdited;
+  final bool canBeDeleted;
   final bool showChecked;
-
+  final PrintModel printModel;
 
   PrintTileComponentLine(
       {@required this.infos,
       this.color,
       @required this.canBeEdited,
+      @required this.canBeDeleted,
       this.description,
-      @required this.showChecked});
+      @required this.showChecked,
+      this.printModel});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,20 @@ class PrintTileComponentLine extends StatelessWidget {
         ),
       ));
     }
+    if (canBeDeleted) {
+      rowWidgets.add(
+        GestureDetector(
+          onTap: () {
+            Provider.of<PrintData>(context, listen: false)
+                .deletePrintModel(printModel);
+          },
+          child: Icon(
+            Icons.delete,
+            color: kColor2,
+          ),
+        ),
+      );
+    }
     if (showChecked) {
       rowWidgets.add(
         Icon(
@@ -41,21 +61,21 @@ class PrintTileComponentLine extends StatelessWidget {
     if (canBeEdited) {
       rowWidgets.add(
         GestureDetector(
-          onTap: (){
+          onTap: () {
             showModalBottomSheet(
               context: context,
-              builder: (context) =>
-                  SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery
-                            .of(context)
-                            .viewInsets
-                            .bottom,
-                      ),
-                      child: UpdateProductScreen(),
-                    ),
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
+                  child: UpdateSingleValueScreen(
+                    updateText: 'Modifica tiraj',
+                    printModel: printModel,
+                  ),
+                ),
+              ),
+              isScrollControlled: true,
             );
           },
           child: Icon(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/print_data.dart';
-import 'package:work_board/screens/update_product_screen.dart';
 import 'package:work_board/widgets/products_list.dart';
 
 import '../constants.dart';

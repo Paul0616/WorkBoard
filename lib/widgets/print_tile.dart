@@ -13,7 +13,6 @@ class PrintTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -25,14 +24,18 @@ class PrintTile extends StatelessWidget {
             ],
             color: kColor3,
             canBeEdited: false,
+            canBeDeleted: true,
             showChecked: false,
+            printModel: printModel,
           ),
           PrintTileComponentLine(
             infos: [
               'Tiraj: ${printModel.quantity.toStringAsFixed(0)} buc',
             ],
             canBeEdited: true,
+            canBeDeleted: false,
             showChecked: false,
+            printModel: printModel,
           ),
           PrintTileComponentLine(
             infos: [
@@ -41,6 +44,7 @@ class PrintTile extends StatelessWidget {
               'H(mm): ${printModel.paperFormat.lengthH}',
             ],
             canBeEdited: true,
+            canBeDeleted: false,
             showChecked: false,
           ),
           PrintTileComponentLine(
@@ -48,6 +52,7 @@ class PrintTile extends StatelessWidget {
               'Adaugă tăieri: ${printModel.getA3FitCount()['cut']}',
             ],
             canBeEdited: true,
+            canBeDeleted: false,
             showChecked: true,
           ),
           PrintTileComponentLine1(
@@ -60,6 +65,7 @@ class PrintTile extends StatelessWidget {
               //62 buc (8x7)+(6x1)',
             ],
             canBeEdited: false,
+            canBeDeleted: false,
             showChecked: false,
             description: '${printModel.getA3FitCount()['description']}',
           ),
@@ -71,6 +77,7 @@ class PrintTile extends StatelessWidget {
               '= 4.62 lei',
             ],
             canBeEdited: false,
+            canBeDeleted: false,
             showChecked: false,
           ),
           PrintTileComponentLine(
@@ -81,6 +88,7 @@ class PrintTile extends StatelessWidget {
               '= 4.62 lei',
             ],
             canBeEdited: false,
+            canBeDeleted: false,
             showChecked: false,
           ),
         ],

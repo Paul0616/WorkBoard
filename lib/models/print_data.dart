@@ -6,7 +6,6 @@ import 'package:work_board/models/print_model.dart';
 class PrintData with ChangeNotifier {
   //ProductType productType = ProductType.print;
 
-
   List<PrintModel> products = [
     PrintModel(
       paperType: PaperType.paper115,
@@ -22,8 +21,7 @@ class PrintData with ChangeNotifier {
     ),
     PrintModel(
       paperType: PaperType.paper250,
-      paperFormat:
-      PaperDimensions(format: PaperFormatEnum.LxH, L: 47, H: 40),
+      paperFormat: PaperDimensions(format: PaperFormatEnum.LxH, L: 47, H: 40),
       colorType: ColorType.TwoFacesBlackWhite,
     ),
   ];
@@ -40,8 +38,18 @@ class PrintData with ChangeNotifier {
     return sum;
   }
 
-//  void updateQuantity(){
-//
-//    notifyListeners();
-//  }
+  void updateQuantity(PrintModel printModel, String quantity) {
+    try {
+      int q = int.parse(quantity);
+      printModel.quantity = q;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void deletePrintModel(PrintModel printModel) {
+    products.remove(printModel);
+    notifyListeners();
+  }
 }
