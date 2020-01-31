@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:work_board/models/print_data.dart';
+import 'package:work_board/models/print_model.dart';
+
+import '../constants.dart';
 
 class UpdateListScreen extends StatelessWidget {
   final String updateText;
   final PrintModel printModel;
-  UpdateListScreen({this.printModel, this.updateText});
+  final List<String> nomenclatureValues;
+
+  UpdateListScreen({this.nomenclatureValues, this.printModel, this.updateText});
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,6 +29,7 @@ class UpdateListScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 40.0,
+            vertical: 40.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,6 +40,31 @@ class UpdateListScreen extends StatelessWidget {
                 style: TextStyle(
                   color: kColor2,
                   fontSize: 30.0,
+                ),
+              ),
+              Container(
+                height: 200.0,
+                child: ListView.builder(
+                  itemExtent: 40,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: (){
+                        Provider.of<PrintData>(context, listen: false).updatePaperType(printModel, nomenclatureValues[index]);
+                        Navigator.pop(context);
+                      },
+                      child: ListTile(
+                        title: Text(
+                          nomenclatureValues[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: nomenclatureValues.length,
                 ),
               ),
             ],

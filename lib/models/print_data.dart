@@ -12,17 +12,20 @@ class PrintData with ChangeNotifier {
       paperFormat:
           PaperDimensions(format: PaperFormatEnum.A5, L: 148.0, H: 210.0),
       colorType: ColorType.OneFaceBlackWhiteOneFaceColor,
+      addCut: false,
     ),
     PrintModel(
       paperType: PaperType.paper250,
       paperFormat:
           PaperDimensions(format: PaperFormatEnum.Banner, L: 640, H: 220),
       colorType: ColorType.TwoFacesBlackWhite,
+      addCut: false,
     ),
     PrintModel(
       paperType: PaperType.paper250,
       paperFormat: PaperDimensions(format: PaperFormatEnum.LxH, L: 47, H: 40),
       colorType: ColorType.TwoFacesBlackWhite,
+      addCut: false,
     ),
   ];
 
@@ -50,6 +53,19 @@ class PrintData with ChangeNotifier {
 
   void deletePrintModel(PrintModel printModel) {
     products.remove(printModel);
+    notifyListeners();
+  }
+
+  void updatePaperType(PrintModel printModel, String type){
+    kPaperType.forEach((k,v){
+      if(v==type)
+        printModel.paperType = k;
+    });
+    notifyListeners();
+  }
+
+  void updateCuts(PrintModel printModel){
+    printModel.toggleAddCut();
     notifyListeners();
   }
 }

@@ -6,17 +6,21 @@ class PrintModel extends ProductModel {
   PaperType paperType;
   PaperDimensions paperFormat;
   ColorType colorType;
-  bool openUpdateScreen;
+  bool addCut;
 
-  PrintModel({this.paperType, this.paperFormat, this.colorType, this.openUpdateScreen = false});
+
+  PrintModel({this.paperType, this.paperFormat, this.colorType, this.addCut = false});
 
   String getPaperTypeName() {
     return kPaperType[paperType];
   }
 
-  void toggleOpenUpdate() {
-    openUpdateScreen = !openUpdateScreen;
+  void toggleAddCut() {
+    addCut = !addCut;
   }
+
+
+
 
   Map<String, String> getA3FitCount(){
     int fitCount = 0;

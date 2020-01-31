@@ -64,3 +64,13 @@ enum PaperFormatEnum {
   Banner,
   LxH,
 }
+
+const Map<String, String> kPrintModelRowsLabels = {
+  'Hartie': 'Tip hârtie:',
+  'Tiraj': 'Tiraj:',
+  'Format': 'Format:',
+  'Taiere': 'Adaugă tăieri:',
+  'Imprimare': 'Imprimare:',
+  'A3': 'Încadrare în A3:',
+  'Costuri': 'Costuri/A4:',
+};
