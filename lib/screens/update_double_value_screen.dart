@@ -4,13 +4,14 @@ import 'package:work_board/constants.dart';
 import 'package:work_board/models/print_data.dart';
 import 'package:work_board/models/print_model.dart';
 
-class UpdateSingleValueScreen extends StatelessWidget {
+class UpdateDoubleValueScreen extends StatelessWidget {
   final String updateText;
   final PrintModel printModel;
-  UpdateSingleValueScreen({this.updateText, this.printModel});
+  UpdateDoubleValueScreen({this.updateText, this.printModel});
   @override
   Widget build(BuildContext context) {
-    String textFieldValue = printModel.quantity.toString();
+    String textFieldValue1 = printModel.paperFormat.widthL.toString();
+    String textFieldValue2 = printModel.paperFormat.lengthH.toString();
     return Container(
       color: Color(0xFF757575),
       child: Container(
@@ -38,11 +39,30 @@ class UpdateSingleValueScreen extends StatelessWidget {
               ),
               TextField(
                 autofocus: true,
-                keyboardType: TextInputType.number,
-                controller: TextEditingController(text: textFieldValue),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                controller: TextEditingController(text: textFieldValue1),
                 textAlign: TextAlign.center,
                 onChanged: (value) {
-                  textFieldValue = value;
+                  textFieldValue1 = value;
+                },
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2.0,
+                      color: kColor2,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              TextField(
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                controller: TextEditingController(text: textFieldValue2),
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  textFieldValue2 = value;
                 },
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
@@ -58,9 +78,10 @@ class UpdateSingleValueScreen extends StatelessWidget {
               ),
               FlatButton(
                 onPressed: () {
-                  //addTaskCallback(taskName);
+                  print('$textFieldValue1 $textFieldValue2');
                   Provider.of<PrintData>(context, listen: false)
-                      .updateQuantity(printModel, textFieldValue);
+                      .updateDimensions(
+                          printModel, textFieldValue1, textFieldValue2);
                   Navigator.pop(context);
                 },
                 child: Text('Add'),

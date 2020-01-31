@@ -8,23 +8,9 @@ class PrintData with ChangeNotifier {
 
   List<PrintModel> products = [
     PrintModel(
-      paperType: PaperType.paper115,
-      paperFormat:
-          PaperDimensions(format: PaperFormatEnum.A5, L: 148.0, H: 210.0),
-      colorType: ColorType.OneFaceBlackWhiteOneFaceColor,
-      addCut: false,
-    ),
-    PrintModel(
-      paperType: PaperType.paper250,
-      paperFormat:
-          PaperDimensions(format: PaperFormatEnum.Banner, L: 640, H: 220),
-      colorType: ColorType.TwoFacesBlackWhite,
-      addCut: false,
-    ),
-    PrintModel(
-      paperType: PaperType.paper250,
-      paperFormat: PaperDimensions(format: PaperFormatEnum.LxH, L: 47, H: 40),
-      colorType: ColorType.TwoFacesBlackWhite,
+      paperType: PaperType.paper80,
+      paperFormat: kDefaultFormats[0],
+      colorType: ColorType.OneFaceColor,
       addCut: false,
     ),
   ];
@@ -56,16 +42,51 @@ class PrintData with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePaperType(PrintModel printModel, String type){
-    kPaperType.forEach((k,v){
-      if(v==type)
-        printModel.paperType = k;
-    });
+  void updateValueFromNomenclature(
+      PrintModel printModel, String type, NomenclatureCode code) {
+    if (code == NomenclatureCode.paperTypeCode) {
+      kPaperType.forEach((k, v) {
+        if (v == type) printModel.paperType = k;
+      });
+    }
+    if (code == NomenclatureCode.paperFormatCode) {
+      kPaperFormat.forEach((k, v) {
+        if (v == type) {
+          for (PaperDimensions dim in kDefaultFormats) {
+            if (dim.format == k) {
+              printModel.paperFormat = dim;
+            }
+          }
+        }
+      });
+    }
     notifyListeners();
   }
 
-  void updateCuts(PrintModel printModel){
+  void updateCuts(PrintModel printModel) {
     printModel.toggleAddCut();
     notifyListeners();
+  }
+
+  void updateColorType(PrintModel printModel, bool firstFace) {
+    printModel.toggleFaceColor(firstFace);
+    notifyListeners();
+  }
+
+  void updateTwoFaces(PrintModel printModel) {
+    printModel.toggleTwoFaces();
+    notifyListeners();
+  }
+
+  void updateDimensions(PrintModel printModel, String l, String h) {
+    try {
+      double widthL = double.parse(l);
+      double lengthH = double.parse(h);
+      printModel.paperFormat.widthL = widthL;
+      printModel.paperFormat.lengthH = lengthH;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 }

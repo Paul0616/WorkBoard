@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/print_data.dart';
 import 'package:work_board/models/print_model.dart';
-import 'package:work_board/screens/update_list_screen.dart';
-import 'package:work_board/screens/update_single_value_screen.dart';
+import 'package:work_board/screens/update_double_value_screen.dart';
+import 'package:work_board/widgets/color_face_rectangle.dart';
+import 'package:work_board/widgets/icon_face.dart';
 
 import '../constants.dart';
 
@@ -13,6 +14,8 @@ class PrintTileComponentLine extends StatelessWidget {
   final Color color;
   final bool canBeEdited;
   final bool canBeDeleted;
+  final bool descriptionCanBeEdited;
+
   final Function showCheckedFunction;
   final PrintModel printModel;
 
@@ -22,65 +25,9 @@ class PrintTileComponentLine extends StatelessWidget {
       @required this.canBeEdited,
       @required this.canBeDeleted,
       this.description,
+      this.descriptionCanBeEdited,
       this.showCheckedFunction,
       this.printModel});
-
-  String rowToBeModified(String info) {
-    for(String value in kPrintModelRowsLabels.values){
-      //print(value);
-      if (info.contains(value)) {
-        return kPrintModelRowsLabels.keys.firstWhere(
-                (k) => kPrintModelRowsLabels[k] == value, orElse: () => null);
-      }
-    }
-    return null;
-  }
-
-  Widget returnEditWidget(String key){
-    switch (key) {
-      case 'Hartie':
-        {
-          List<String> nomenclature = [];
-          kPaperType.forEach((k,v){
-            nomenclature.add(v);
-          });
-          return UpdateListScreen(
-            updateText: 'Tip hârtie',
-            nomenclatureValues: nomenclature,
-            printModel: printModel,
-          );
-        }
-        break;
-      case 'Tiraj':
-        {
-          return UpdateSingleValueScreen(
-            updateText: 'Tiraj',
-            printModel: printModel,
-          );
-        }
-        break;
-      case 'Format':
-        {
-          return null;
-        }
-        break;
-      case 'Taiere':
-        {
-          return null;
-        }
-        break;
-      case 'Imprimare':
-        {
-          return null;
-        }
-        break;
-      default:
-        {
-          return null;
-        }
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +55,6 @@ class PrintTileComponentLine extends StatelessWidget {
         ),
       );
     }
-    print('CUT: ${printModel.addCut}');
     if (showCheckedFunction != null) {
       rowWidgets.add(
         Checkbox(
@@ -132,7 +78,7 @@ class PrintTileComponentLine extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
-                  child: returnEditWidget(rowIdentifier),
+                  child: returnEditWidget(rowIdentifier, printModel),
                 ),
               ),
               isScrollControlled: true,
@@ -152,14 +98,52 @@ class PrintTileComponentLine extends StatelessWidget {
         children: rowWidgets,
       ),
     );
+
     if (description != null) {
-      columnWidgets.add(
+      List<Widget> descriptionWidgets = [];
+      descriptionWidgets.add(
         Text(
           description,
           style: TextStyle(
-            color: Colors.red,
+            color: Colors.black54,
             fontSize: 10,
           ),
+        ),
+      );
+      if (descriptionCanBeEdited) {
+        descriptionWidgets.add(
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: UpdateDoubleValueScreen(
+                      updateText: 'Dimensiuni:',
+                      printModel: printModel,
+                    ),
+                  ),
+                ),
+                isScrollControlled: true,
+              );
+            },
+            child: Text(
+              ' (Atinge pentru editare)',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 10,
+              ),
+            ),
+          ),
+        );
+      }
+
+      columnWidgets.add(
+        Row(
+          children: descriptionWidgets,
         ),
       );
     }
@@ -178,11 +162,11 @@ class PrintTileComponentLine extends StatelessWidget {
 
 class PrintTileComponentLine1 extends StatelessWidget {
   final List<String> infos;
-  final ColorType colorType;
+  final PrintModel printModel;
 
   PrintTileComponentLine1({
     @required this.infos,
-    @required this.colorType,
+    @required this.printModel,
   });
 
   @override
@@ -197,99 +181,106 @@ class PrintTileComponentLine1 extends StatelessWidget {
       ));
     }
 
-    switch (colorType) {
+    switch (printModel.colorType) {
       case ColorType.OneFaceColor:
         {
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.red,
+            firstFace: true,
           ));
-          rowWidgets.add(
-            Image(
-              image: AssetImage('images/pag1.png'),
-            ),
-          );
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 1,
+          ));
         }
         break;
       case ColorType.OneFaceBlackWhite:
         {
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.black,
+            firstFace: true,
           ));
-          rowWidgets.add(
-            Image(
-              image: AssetImage('images/pag1.png'),
-            ),
-          );
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 1,
+          ));
         }
         break;
       case ColorType.TwoFacesBlackWhite:
         {
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.black,
+            firstFace: true,
           ));
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.black,
+            firstFace: false,
           ));
-          rowWidgets.add(
-            Image(
-              image: AssetImage('images/pag2.png'),
-            ),
-          );
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 2,
+          ));
         }
         break;
       case ColorType.TwoFacesColor:
         {
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.red,
+            firstFace: true,
           ));
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.red,
+            firstFace: false,
           ));
-          rowWidgets.add(
-            Image(
-              image: AssetImage('images/pag2.png'),
-            ),
-          );
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 2,
+          ));
         }
         break;
-      case ColorType.OneFaceBlackWhiteOneFaceColor:
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
         {
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
-            color: Colors.red,
-          ));
-          rowWidgets.add(Container(
-            width: 30.0,
-            height: 30.0,
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
             color: Colors.black,
+            firstFace: true,
           ));
-          rowWidgets.add(
-            Image(
-              image: AssetImage('images/pag2.png'),
-            ),
-          );
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
+            color: Colors.red,
+            firstFace: false,
+          ));
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 2,
+          ));
+        }
+        break;
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+        {
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
+            color: Colors.red,
+            firstFace: true,
+          ));
+          rowWidgets.add(ColorFaceRectangle(
+            printModel: printModel,
+            color: Colors.black,
+            firstFace: false,
+          ));
+          rowWidgets.add(IconFace(
+            printModel: printModel,
+            faceNumber: 2,
+          ));
         }
         break;
     }
-
-    rowWidgets.add(
-      Icon(
-        Icons.arrow_drop_down,
-      ),
-    );
 
     return Container(
       padding: EdgeInsets.all(8.0),

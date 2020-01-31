@@ -41,7 +41,10 @@ class PrintTile extends StatelessWidget {
             infos: [
               '${kPrintModelRowsLabels['Format']} ${EnumToString.parse(printModel.paperFormat.format)}',
             ],
-            description: 'L(mm): ${printModel.paperFormat.widthL}  H(mm): ${printModel.paperFormat.lengthH}',
+            description:
+                'L(mm): ${printModel.paperFormat.widthL}  H(mm): ${printModel.paperFormat.lengthH}',
+            descriptionCanBeEdited:
+                printModel.paperFormat.format == PaperFormatEnum.LxH,
             canBeEdited: true,
             canBeDeleted: false,
             printModel: printModel,
@@ -52,14 +55,15 @@ class PrintTile extends StatelessWidget {
             ],
             canBeEdited: false,
             canBeDeleted: false,
-            showCheckedFunction: (checkboxState){
-              Provider.of<PrintData>(context, listen: false).updateCuts(printModel);
+            showCheckedFunction: (checkboxState) {
+              Provider.of<PrintData>(context, listen: false)
+                  .updateCuts(printModel);
             },
             printModel: printModel,
           ),
           PrintTileComponentLine1(
             infos: ['${kPrintModelRowsLabels['Imprimare']}'],
-            colorType: printModel.colorType,
+            printModel: printModel,
           ),
           PrintTileComponentLine(
             infos: [
@@ -69,6 +73,7 @@ class PrintTile extends StatelessWidget {
             canBeEdited: false,
             canBeDeleted: false,
             description: '${printModel.getA3FitCount()['description']}',
+            descriptionCanBeEdited: false,
             printModel: printModel,
           ),
           PrintTileComponentLine(

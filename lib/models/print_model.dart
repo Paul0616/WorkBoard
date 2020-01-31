@@ -8,8 +8,8 @@ class PrintModel extends ProductModel {
   ColorType colorType;
   bool addCut;
 
-
-  PrintModel({this.paperType, this.paperFormat, this.colorType, this.addCut = false});
+  PrintModel(
+      {this.paperType, this.paperFormat, this.colorType, this.addCut = false});
 
   String getPaperTypeName() {
     return kPaperType[paperType];
@@ -19,10 +19,67 @@ class PrintModel extends ProductModel {
     addCut = !addCut;
   }
 
+  void toggleTwoFaces() {
+    switch (colorType) {
+      case ColorType.OneFaceColor:
+        colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+        break;
+      case ColorType.OneFaceBlackWhite:
+        colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+        break;
+      case ColorType.TwoFacesColor:
+        colorType = ColorType.OneFaceColor;
+        break;
+      case ColorType.TwoFacesBlackWhite:
+        colorType = ColorType.OneFaceBlackWhite;
+        break;
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
+        colorType = ColorType.OneFaceBlackWhite;
+        break;
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+        colorType = ColorType.OneFaceColor;
+        break;
+    }
+  }
 
+  void toggleFaceColor(bool firstFace) {
+    switch (colorType) {
+      case ColorType.OneFaceColor:
+        colorType = ColorType.OneFaceBlackWhite;
+        break;
+      case ColorType.OneFaceBlackWhite:
+        colorType = ColorType.OneFaceColor;
+        break;
+      case ColorType.TwoFacesColor:
+        if (firstFace) {
+          colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+        } else {
+          colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+        }
+        break;
+      case ColorType.TwoFacesBlackWhite:
+        if (firstFace) {
+          colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+        } else {
+          colorType = ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+        }
+        break;
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
+        if (firstFace)
+          colorType = ColorType.TwoFacesColor;
+        else
+          colorType = ColorType.TwoFacesBlackWhite;
+        break;
+      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+        if (firstFace)
+          colorType = ColorType.TwoFacesBlackWhite;
+        else
+          colorType = ColorType.TwoFacesColor;
+        break;
+    }
+  }
 
-
-  Map<String, String> getA3FitCount(){
+  Map<String, String> getA3FitCount() {
     int fitCount = 0;
     int labelWidth = paperFormat.widthL.toInt();
     int labelHeight = paperFormat.lengthH.toInt();
@@ -59,14 +116,19 @@ class PrintModel extends ProductModel {
     //how many labels fit in total on the A3 landscape | exemplu n2=2x3=6
     int nr2 = fitHorizontallyOnA3landscape * fitVerticallyOnA3Landscape;
 
+    int nrsup1 = (dimRemainOnHorizontallyA3Portrait / labelHeight).floor();
 
-    int nrsup1 =(dimRemainOnHorizontallyA3Portrait / labelHeight).floor(); /// exemplu 1
-    int nrsup2 = (dimRemainOnVerticallyA3Portrait / labelWidth).floor(); /// exemplu 0
+    /// exemplu 1
+    int nrsup2 = (dimRemainOnVerticallyA3Portrait / labelWidth).floor();
+
+    /// exemplu 0
     int nrplus = 0;
     int nrLsup1 = 0;
     int nrHsup1 = 0;
-    if(nrsup1 >= nrsup2){
-      nrplus = (420 / labelWidth).floor(); /// exemplu 2
+    if (nrsup1 >= nrsup2) {
+      nrplus = (420 / labelWidth).floor();
+
+      /// exemplu 2
       nrLsup1 = nrplus; // 2
       nrHsup1 = nrsup1; // 1
     } else {
@@ -75,17 +137,23 @@ class PrintModel extends ProductModel {
       nrHsup1 = nrplus; // 2
     }
 
+    nrsup1 = (dimRemainOnHorizontallyOnA3Landscape / labelHeight)
+        .floor(); //// exemplu 0
+    nrsup2 = (dimRemainVerticallyOnA3Landscape / labelWidth).floor();
 
-    nrsup1 = (dimRemainOnHorizontallyOnA3Landscape / labelHeight).floor(); //// exemplu 0
-    nrsup2 = (dimRemainVerticallyOnA3Landscape / labelWidth).floor(); /// exemplu 0
+    /// exemplu 0
     int nrLsup2 = 0;
     int nrHsup2 = 0;
-    if(nrsup1 >= nrsup2){
-      nrplus = (297 / labelWidth).floor(); /// exemplu 1
+    if (nrsup1 >= nrsup2) {
+      nrplus = (297 / labelWidth).floor();
+
+      /// exemplu 1
       nrLsup2 = nrplus; // exemplu 1
       nrHsup2 = nrsup1; // exemplu 0
     } else {
-      nrplus = (420 / labelHeight).floor(); /// exemplu 5
+      nrplus = (420 / labelHeight).floor();
+
+      /// exemplu 5
       nrLsup2 = nrsup2; // exemplu 0
       nrHsup2 = nrplus; // exemplu 5
     }
@@ -95,44 +163,47 @@ class PrintModel extends ProductModel {
     int extraNrH = 0;
     int nrL = 0;
     int nrH = 0;
-    if((nr1 + (nrLsup1*nrHsup1)) > (nr2 + (nrLsup2*nrHsup2))) {
+    if ((nr1 + (nrLsup1 * nrHsup1)) > (nr2 + (nrLsup2 * nrHsup2))) {
       fitCount = nr1;
-      extraFitCount = nrLsup1*nrHsup1;
+      extraFitCount = nrLsup1 * nrHsup1;
       extraNrL = nrLsup1;
       extraNrH = nrHsup1;
       nrL = fitHorizontallyOnA3Portrait;
       nrH = fitVerticallyOnA3Portrait;
     }
-    if((nr1 + (nrLsup1*nrHsup1)) < (nr2 + (nrLsup2*nrHsup2))) {
+    if ((nr1 + (nrLsup1 * nrHsup1)) < (nr2 + (nrLsup2 * nrHsup2))) {
       fitCount = nr2;
-      extraFitCount = nrLsup2*nrHsup2;
+      extraFitCount = nrLsup2 * nrHsup2;
       extraNrL = nrLsup2;
       extraNrH = nrHsup2;
       nrL = fitHorizontallyOnA3landscape;
       nrH = fitVerticallyOnA3Landscape;
     }
-    if((nr1 + (nrLsup1*nrHsup1)) == (nr2 + (nrLsup2*nrHsup2))) {
-      if (nr1 >= nr2){
+    if ((nr1 + (nrLsup1 * nrHsup1)) == (nr2 + (nrLsup2 * nrHsup2))) {
+      if (nr1 >= nr2) {
         fitCount = nr1;
-        extraFitCount = nrLsup1*nrHsup1;
+        extraFitCount = nrLsup1 * nrHsup1;
         extraNrL = nrLsup1;
         extraNrH = nrHsup1;
         nrL = fitHorizontallyOnA3Portrait;
         nrH = fitVerticallyOnA3Portrait;
       } else {
         fitCount = nr2;
-        extraFitCount = nrLsup2*nrHsup2;
+        extraFitCount = nrLsup2 * nrHsup2;
         extraNrL = nrLsup2;
         extraNrH = nrHsup2;
         nrL = fitHorizontallyOnA3landscape;
         nrH = fitVerticallyOnA3Landscape;
       }
-
     }
     Map<String, String> result = {};
-    result['cut'] = extraFitCount != 0 ? '${nrL + nrH + 2 + extraNrL + extraNrH} tăieri': '${nrL + nrH + 2} tăieri';
-    result['description'] = extraFitCount != 0 ? '$nrL x $nrH plus $extraNrL x $extraNrH / Încap $fitCount formate plus $extraFitCount fibra inversă' : '$nrL x $nrH';
-    if(nrL == 0 || nrH == 0) {
+    result['cut'] = extraFitCount != 0
+        ? '${nrL + nrH + 2 + extraNrL + extraNrH} tăieri'
+        : '${nrL + nrH + 2} tăieri';
+    result['description'] = extraFitCount != 0
+        ? '$nrL x $nrH plus $extraNrL x $extraNrH / Încap $fitCount formate plus $extraFitCount fibra inversă'
+        : '$nrL x $nrH';
+    if (nrL == 0 || nrH == 0) {
       result['description'] = 'Formatul e mai mare decât A3.';
     }
 
@@ -140,5 +211,4 @@ class PrintModel extends ProductModel {
     result['fitCount'] = fitCount.toString();
     return result;
   }
-
 }
