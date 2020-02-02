@@ -14,6 +14,13 @@ class ProductScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kColor2,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kColor3,
+        child: Icon(Icons.add),
+        onPressed: () {
+          Provider.of<PrintData>(context, listen: false).addPrint();
+        },
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -65,7 +72,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Valoare: ${products.allPrintsValue} lei (${products.productCount} produse)',
+                  'Valoare: ${products.allPrintsValue.toStringAsFixed(2)} lei (${products.productCount} produse)',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,

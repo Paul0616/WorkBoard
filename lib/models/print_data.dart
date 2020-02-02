@@ -31,6 +31,7 @@ class PrintData with ChangeNotifier {
     try {
       int q = int.parse(quantity);
       printModel.quantity = q;
+      printModel.refreshPrices();
       notifyListeners();
     } catch (e) {
       print(e);
@@ -39,6 +40,16 @@ class PrintData with ChangeNotifier {
 
   void deletePrintModel(PrintModel printModel) {
     products.remove(printModel);
+    notifyListeners();
+  }
+
+  void addPrint() {
+    products.add(PrintModel(
+      paperType: PaperType.paper80,
+      paperFormat: kDefaultFormats[0],
+      colorType: ColorType.OneFaceColor,
+      addCut: false,
+    ));
     notifyListeners();
   }
 
@@ -60,21 +71,25 @@ class PrintData with ChangeNotifier {
         }
       });
     }
+    printModel.refreshPrices();
     notifyListeners();
   }
 
   void updateCuts(PrintModel printModel) {
     printModel.toggleAddCut();
+    printModel.refreshPrices();
     notifyListeners();
   }
 
   void updateColorType(PrintModel printModel, bool firstFace) {
     printModel.toggleFaceColor(firstFace);
+    printModel.refreshPrices();
     notifyListeners();
   }
 
   void updateTwoFaces(PrintModel printModel) {
     printModel.toggleTwoFaces();
+    printModel.refreshPrices();
     notifyListeners();
   }
 
@@ -84,6 +99,7 @@ class PrintData with ChangeNotifier {
       double lengthH = double.parse(h);
       printModel.paperFormat.widthL = widthL;
       printModel.paperFormat.lengthH = lengthH;
+      printModel.refreshPrices();
       notifyListeners();
     } catch (e) {
       print(e);

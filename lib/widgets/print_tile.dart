@@ -15,6 +15,19 @@ class PrintTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    int printCountColorA4 = printModel.printsCountColorA4();
+//    int printCountBlackWhiteA4 = printModel.printsCountBlackWhiteA4();
+//    double priceColorA4 =
+//        printModel.getPriceForColorA4(printCountColorA4, printModel.paperType);
+//    double priceBlackWhiteA4 = printModel.getPriceForBlackWhiteA4(
+//        printCountBlackWhiteA4, printModel.paperType);
+//    double valueBlackWhite =
+//        double.parse(priceBlackWhiteA4.toStringAsFixed(2)) *
+//            printCountBlackWhiteA4;
+//    double valueColor =
+//        double.parse(priceColorA4.toStringAsFixed(2)) * printCountColorA4;
+//    printModel.value = valueColor + valueBlackWhite;
+    // printModel.refreshPrices();
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -67,7 +80,7 @@ class PrintTile extends StatelessWidget {
           ),
           PrintTileComponentLine(
             infos: [
-              '${kPrintModelRowsLabels['A3']} ${printModel.getA3FitCount()['fitCount']} buc',
+              '${kPrintModelRowsLabels['A3']} ${printModel.getA3FitCount()['fitCount']} buc/A3',
               //62 buc (8x7)+(6x1)',
             ],
             canBeEdited: false,
@@ -79,9 +92,9 @@ class PrintTile extends StatelessWidget {
           PrintTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Costuri']}',
-              'Color: 1.54 lei',
-              'x 3 A4',
-              '= 4.62 lei',
+              'Color: ${printModel.printPriceColored} lei',
+              'x ${printModel.printCountColored} A4',
+              '= ${(printModel.printPriceColored * printModel.printCountColored).toStringAsFixed(2)} lei',
             ],
             canBeEdited: false,
             canBeDeleted: false,
@@ -90,9 +103,9 @@ class PrintTile extends StatelessWidget {
           PrintTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Costuri']}',
-              'A/N:   1.54 lei',
-              'x 3 A4',
-              '= 4.62 lei',
+              'A/N:   ${printModel.printPriceGray} lei',
+              'x ${printModel.printCountGray} A4',
+              '= ${(printModel.printPriceGray * printModel.printCountGray).toStringAsFixed(2)} lei',
             ],
             canBeEdited: false,
             canBeDeleted: false,

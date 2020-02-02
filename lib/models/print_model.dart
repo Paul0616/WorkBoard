@@ -7,12 +7,36 @@ class PrintModel extends ProductModel {
   PaperDimensions paperFormat;
   ColorType colorType;
   bool addCut;
+  int printCountColored = 0;
+  int printCountGray = 0;
+  double printPriceColored = 0;
+  double printPriceGray = 0;
+  double printCuttingCost = 0;
 
   PrintModel(
       {this.paperType, this.paperFormat, this.colorType, this.addCut = false});
 
   String getPaperTypeName() {
     return kPaperType[paperType];
+  }
+
+  bool isDoubleSided() {
+    return colorType != ColorType.OneFaceBlackWhite &&
+        colorType != ColorType.OneFaceColor;
+  }
+
+  bool isBanner() {
+    return paperFormat.format == PaperFormatEnum.Banner;
+  }
+
+  bool isColored() {
+    return colorType != ColorType.TwoFacesBlackWhite &&
+        colorType != ColorType.OneFaceBlackWhite;
+  }
+
+  bool bothSidesAreTheSame() {
+    return colorType == ColorType.TwoFacesColor ||
+        colorType == ColorType.TwoFacesBlackWhite;
   }
 
   void toggleAddCut() {
@@ -77,6 +101,174 @@ class PrintModel extends ProductModel {
           colorType = ColorType.TwoFacesColor;
         break;
     }
+  }
+
+  int printsCountA4() {
+    int printA4 = 0;
+    try {
+      int printOnA3 = int.parse(getA3FitCount()['fitCount']);
+      if (!isBanner())
+        printA4 = (quantity / printOnA3 * 2).ceil();
+      else
+        printA4 = quantity * 3;
+
+      if (isDoubleSided()) printA4 *= 2;
+    } catch (e) {
+      print(e);
+    }
+    print(
+        'countA4 $printA4 Doublesided ${isDoubleSided()} Colored ${isColored()} Both ${bothSidesAreTheSame()}');
+    return printA4;
+  }
+
+  int printsCountBlackWhiteA4(int prints) {
+    //int prints = printsCountA4();
+    int prBAA4 = 0;
+
+    if (isDoubleSided()) {
+      if (bothSidesAreTheSame()) {
+        if (!isColored()) {
+          prBAA4 = prints;
+        }
+      } else {
+        prBAA4 = (prints ~/ 2).toInt();
+      }
+    } else if (!isColored()) {
+      prBAA4 = prints;
+    }
+
+    return prBAA4;
+  }
+
+  int printsCountColorA4(int prints) {
+    //int prints = printsCountA4();
+    int prCA4 = 0;
+
+    if (isDoubleSided()) {
+      if (bothSidesAreTheSame()) {
+        if (isColored()) {
+          prCA4 = prints;
+        }
+      } else {
+        prCA4 = (prints ~/ 2).toInt();
+      }
+    } else if (isColored()) {
+      prCA4 = prints;
+    }
+
+    return prCA4;
+  }
+
+  int _getPriceLevel(int pages) {
+    if (pages <= 5) return 1;
+    if (pages > 5 && pages <= 20) return 2;
+    if (pages > 20 && pages <= 100) return 3;
+    if (pages > 100 && pages <= 300) return 4;
+    if (pages > 300) return 5;
+  }
+
+  double _linearDecreasePrice(int pages, List<double> prices, int priceLevel) {
+    double price;
+    switch (priceLevel) {
+      case 1:
+        {
+          price = prices[0] + ((pages - 1) * (prices[1] - prices[0]) / 5);
+          if (pages == 0) price = 0;
+        }
+        break;
+      case 2:
+        price = prices[1] + ((pages - 6) * (prices[2] - prices[1]) / 15);
+        break;
+      case 3:
+        price = prices[2] + ((pages - 21) * (prices[3] - prices[2]) / 80);
+        break;
+      case 4:
+        price = prices[3] + ((pages - 101) * (prices[4] - prices[3]) / 200);
+        break;
+      case 5:
+        price = prices[4];
+        break;
+      default:
+        price = 0;
+        break;
+    }
+    return price;
+  }
+
+  double getPriceForBlackWhiteA4(int pages, PaperType paperType) {
+    double price = 0;
+    switch (paperType) {
+      case PaperType.paper80:
+        price = _linearDecreasePrice(pages, preturiAN80, _getPriceLevel(pages));
+        break;
+      case PaperType.paper115:
+        price =
+            _linearDecreasePrice(pages, preturiAN115, _getPriceLevel(pages));
+        break;
+      case PaperType.paper150:
+        price =
+            _linearDecreasePrice(pages, preturiAN150, _getPriceLevel(pages));
+        break;
+      case PaperType.paper250:
+        price =
+            _linearDecreasePrice(pages, preturiAN250, _getPriceLevel(pages));
+        break;
+      case PaperType.paperSticker:
+        price = _linearDecreasePrice(pages, preturiANac, _getPriceLevel(pages));
+        break;
+      case PaperType.paperSpecial:
+        price = _linearDecreasePrice(pages, preturiANcs, _getPriceLevel(pages));
+        break;
+    }
+    return price;
+  }
+
+  double getPriceForColorA4(int pages, PaperType paperType) {
+    double price = 0;
+    switch (paperType) {
+      case PaperType.paper80:
+        price =
+            _linearDecreasePrice(pages, preturiColor80, _getPriceLevel(pages));
+        break;
+      case PaperType.paper115:
+        price =
+            _linearDecreasePrice(pages, preturiColor115, _getPriceLevel(pages));
+        break;
+      case PaperType.paper150:
+        price =
+            _linearDecreasePrice(pages, preturiColor150, _getPriceLevel(pages));
+        break;
+      case PaperType.paper250:
+        price =
+            _linearDecreasePrice(pages, preturiColor250, _getPriceLevel(pages));
+        break;
+      case PaperType.paperSticker:
+        price =
+            _linearDecreasePrice(pages, preturiColorac, _getPriceLevel(pages));
+        break;
+      case PaperType.paperSpecial:
+        price =
+            _linearDecreasePrice(pages, preturiColorcs, _getPriceLevel(pages));
+        break;
+    }
+    return price;
+  }
+
+  void refreshPrices() {
+    int prints = printsCountA4();
+    printCountColored = printsCountColorA4(prints);
+    print('REFRESH');
+    printCountGray = printsCountBlackWhiteA4(prints);
+
+    printPriceColored = double.parse(
+        getPriceForColorA4(printCountColored, paperType).toStringAsFixed(2));
+
+    printPriceGray = double.parse(
+        getPriceForBlackWhiteA4(printCountGray, paperType).toStringAsFixed(2));
+
+    value = printCountColored * printPriceColored +
+        printCountGray * printPriceGray +
+        (addCut ? printCuttingCost : 0);
   }
 
   Map<String, String> getA3FitCount() {
@@ -197,9 +389,14 @@ class PrintModel extends ProductModel {
       }
     }
     Map<String, String> result = {};
+    printCuttingCost = kCuttingPrice *
+        (extraFitCount != 0
+            ? nrL + nrH + 2 + extraNrL + extraNrH
+            : nrL + nrH + 2);
     result['cut'] = extraFitCount != 0
         ? '${nrL + nrH + 2 + extraNrL + extraNrH} tăieri'
         : '${nrL + nrH + 2} tăieri';
+
     result['description'] = extraFitCount != 0
         ? '$nrL x $nrH plus $extraNrL x $extraNrH / Încap $fitCount formate plus $extraFitCount fibra inversă'
         : '$nrL x $nrH';

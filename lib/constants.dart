@@ -5,6 +5,22 @@ import 'package:work_board/screens/update_single_value_screen.dart';
 import 'models/paper_dimension.dart';
 import 'models/print_model.dart';
 
+List<double> preturiColor80 = [1.4, 1.30, 1.20, 1.1, 0.95];
+List<double> preturiColor115 = [1.6, 1.5, 1.4, 1.3, 1.05];
+List<double> preturiColor150 = [1.7, 1.6, 1.5, 1.4, 1.2];
+List<double> preturiColor250 = [1.8, 1.7, 1.6, 1.5, 1.25];
+List<double> preturiColorac = [2.1, 2.0, 1.9, 1.7, 1.5];
+List<double> preturiColorcs = [2.2, 2.1, 2.0, 1.9, 1.75];
+
+List<double> preturiAN80 = [0.35, 0.3, 0.25, 0.23, 0.18];
+List<double> preturiAN115 = [0.55, 0.5, 0.45, 0.4, 0.33];
+List<double> preturiAN150 = [0.65, 0.6, 0.55, 0.45, 0.38];
+List<double> preturiAN250 = [0.75, 0.7, 0.6, 0.5, 0.43];
+List<double> preturiANac = [0.85, 0.75, 0.65, 0.55, 0.48];
+List<double> preturiANcs = [1.15, 1.1, 1.05, 1.05, 1];
+
+const double kCuttingPrice = 0.25;
+
 const kColor1 = Colors.white;
 const kColor2 = Colors.red;
 const kColor3 = Colors.orangeAccent;
@@ -124,7 +140,7 @@ const Map<String, String> kPrintModelRowsLabels = {
   'Format': 'Format:',
   'Taiere': 'Adaugă tăieri:',
   'Imprimare': 'Imprimare:',
-  'A3': 'Încadrare în A3:',
+  'A3': 'Încadrare:',
   'Costuri': 'Costuri/A4:',
 };
 
