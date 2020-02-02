@@ -20,21 +20,21 @@ class PrintModel extends ProductModel {
     return kPaperType[paperType];
   }
 
-  bool isDoubleSided() {
+  bool _isDoubleSided() {
     return colorType != ColorType.OneFaceBlackWhite &&
         colorType != ColorType.OneFaceColor;
   }
 
-  bool isBanner() {
+  bool _isBanner() {
     return paperFormat.format == PaperFormatEnum.Banner;
   }
 
-  bool isColored() {
+  bool _isColored() {
     return colorType != ColorType.TwoFacesBlackWhite &&
         colorType != ColorType.OneFaceBlackWhite;
   }
 
-  bool bothSidesAreTheSame() {
+  bool _bothSidesAreTheSame() {
     return colorType == ColorType.TwoFacesColor ||
         colorType == ColorType.TwoFacesBlackWhite;
   }
@@ -103,56 +103,56 @@ class PrintModel extends ProductModel {
     }
   }
 
-  int printsCountA4() {
+  int _printsCountA4() {
     int printA4 = 0;
     try {
       int printOnA3 = int.parse(getA3FitCount()['fitCount']);
-      if (!isBanner())
+      if (!_isBanner())
         printA4 = (quantity / printOnA3 * 2).ceil();
       else
         printA4 = quantity * 3;
 
-      if (isDoubleSided()) printA4 *= 2;
+      if (_isDoubleSided()) printA4 *= 2;
     } catch (e) {
       print(e);
     }
     print(
-        'countA4 $printA4 Doublesided ${isDoubleSided()} Colored ${isColored()} Both ${bothSidesAreTheSame()}');
+        'countA4 $printA4 Doublesided ${_isDoubleSided()} Colored ${_isColored()} Both ${_bothSidesAreTheSame()}');
     return printA4;
   }
 
-  int printsCountBlackWhiteA4(int prints) {
+  int _printsCountBlackWhiteA4(int prints) {
     //int prints = printsCountA4();
     int prBAA4 = 0;
 
-    if (isDoubleSided()) {
-      if (bothSidesAreTheSame()) {
-        if (!isColored()) {
+    if (_isDoubleSided()) {
+      if (_bothSidesAreTheSame()) {
+        if (!_isColored()) {
           prBAA4 = prints;
         }
       } else {
         prBAA4 = (prints ~/ 2).toInt();
       }
-    } else if (!isColored()) {
+    } else if (!_isColored()) {
       prBAA4 = prints;
     }
 
     return prBAA4;
   }
 
-  int printsCountColorA4(int prints) {
+  int _printsCountColorA4(int prints) {
     //int prints = printsCountA4();
     int prCA4 = 0;
 
-    if (isDoubleSided()) {
-      if (bothSidesAreTheSame()) {
-        if (isColored()) {
+    if (_isDoubleSided()) {
+      if (_bothSidesAreTheSame()) {
+        if (_isColored()) {
           prCA4 = prints;
         }
       } else {
         prCA4 = (prints ~/ 2).toInt();
       }
-    } else if (isColored()) {
+    } else if (_isColored()) {
       prCA4 = prints;
     }
 
@@ -165,6 +165,7 @@ class PrintModel extends ProductModel {
     if (pages > 20 && pages <= 100) return 3;
     if (pages > 100 && pages <= 300) return 4;
     if (pages > 300) return 5;
+    return 0;
   }
 
   double _linearDecreasePrice(int pages, List<double> prices, int priceLevel) {
@@ -195,7 +196,7 @@ class PrintModel extends ProductModel {
     return price;
   }
 
-  double getPriceForBlackWhiteA4(int pages, PaperType paperType) {
+  double _getPriceForBlackWhiteA4(int pages, PaperType paperType) {
     double price = 0;
     switch (paperType) {
       case PaperType.paper80:
@@ -223,7 +224,7 @@ class PrintModel extends ProductModel {
     return price;
   }
 
-  double getPriceForColorA4(int pages, PaperType paperType) {
+  double _getPriceForColorA4(int pages, PaperType paperType) {
     double price = 0;
     switch (paperType) {
       case PaperType.paper80:
@@ -255,16 +256,16 @@ class PrintModel extends ProductModel {
   }
 
   void refreshPrices() {
-    int prints = printsCountA4();
-    printCountColored = printsCountColorA4(prints);
+    int prints = _printsCountA4();
+    printCountColored = _printsCountColorA4(prints);
     print('REFRESH');
-    printCountGray = printsCountBlackWhiteA4(prints);
+    printCountGray = _printsCountBlackWhiteA4(prints);
 
     printPriceColored = double.parse(
-        getPriceForColorA4(printCountColored, paperType).toStringAsFixed(2));
+        _getPriceForColorA4(printCountColored, paperType).toStringAsFixed(2));
 
     printPriceGray = double.parse(
-        getPriceForBlackWhiteA4(printCountGray, paperType).toStringAsFixed(2));
+        _getPriceForBlackWhiteA4(printCountGray, paperType).toStringAsFixed(2));
 
     value = printCountColored * printPriceColored +
         printCountGray * printPriceGray +

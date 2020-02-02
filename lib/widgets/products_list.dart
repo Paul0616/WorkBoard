@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/widgets/print_tile.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/widgets/prints/print_tile.dart';
+import 'package:work_board/widgets/vistCards/visit_card_tile.dart';
 
 import '../constants.dart';
-import 'big_print_tile.dart';
+
 
 class ProductsList extends StatelessWidget {
-  final productType = ProductType.print;
+  final productType;
+  ProductsList({this.productType});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,11 @@ class ProductsList extends StatelessWidget {
         switch (productType) {
           case ProductType.print:
             return PrintTile(
-              printModel: Provider.of<PrintData>(context).products[index],
+              printModel: Provider.of<ProductData>(context).currentProducts[index],
             );
             break;
-          case ProductType.big_print:
-            return BigPrintTile();
+          case ProductType.visit_card:
+            return VisitCardTile();
             break;
           default:
             {
@@ -30,7 +32,7 @@ class ProductsList extends StatelessWidget {
             break;
         }
       },
-      itemCount: Provider.of<PrintData>(context).productCount,
+      itemCount: Provider.of<ProductData>(context).productCount,
     );
   }
 }

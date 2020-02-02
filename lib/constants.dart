@@ -3,7 +3,7 @@ import 'package:work_board/screens/update_list_screen.dart';
 import 'package:work_board/screens/update_single_value_screen.dart';
 
 import 'models/paper_dimension.dart';
-import 'models/print_model.dart';
+import 'models/prints/print_model.dart';
 
 List<double> preturiColor80 = [1.4, 1.30, 1.20, 1.1, 0.95];
 List<double> preturiColor115 = [1.6, 1.5, 1.4, 1.3, 1.05];
@@ -50,6 +50,21 @@ enum ProductType {
   textile_printing,
   finishing,
 }
+
+const Map<ProductType, String> kProductTypes = {
+  ProductType.book: 'Carte/Broșura/Pliant',
+  ProductType.print: 'Printuri',
+  ProductType.visit_card: 'Cărți Vizită',
+  ProductType.folder: 'Mape',
+  ProductType.poster: 'Afise',
+  ProductType.big_print: 'Printuri mari',
+  ProductType.wall_sticker: 'Stickere perete',
+  ProductType.cut_sheets: 'Cutteari folie',
+  ProductType.cut_paper_sticker: 'Cutterari autocolant hartie',
+  ProductType.engraving: 'Gravari',
+  ProductType.textile_printing: 'Imprimari textile',
+  ProductType.finishing: 'Finisari',
+};
 
 enum ColorType {
   OneFaceColor,
@@ -132,6 +147,7 @@ enum PaperFormatEnum {
 enum NomenclatureCode {
   paperTypeCode,
   paperFormatCode,
+  productsCode,
 }
 
 const Map<String, String> kPrintModelRowsLabels = {
@@ -155,7 +171,7 @@ String rowToBeModified(String info) {
   return null;
 }
 
-Widget returnEditWidget(String key, PrintModel printModel) {
+Widget componentToBeEdited(String key, PrintModel printModel) {
   switch (key) {
     case 'Hartie':
       {
@@ -164,7 +180,7 @@ Widget returnEditWidget(String key, PrintModel printModel) {
           nomenclature.add(v);
         });
         return UpdateListScreen(
-          updateText: 'Tip hârtie',
+          listTitle: 'Tip hârtie',
           nomenclatureValues: nomenclature,
           printModel: printModel,
           code: NomenclatureCode.paperTypeCode,
@@ -187,7 +203,7 @@ Widget returnEditWidget(String key, PrintModel printModel) {
         });
 
         return UpdateListScreen(
-          updateText: 'Format hârtie',
+          listTitle: 'Format hârtie',
           nomenclatureValues: nomenclature,
           printModel: printModel,
           code: NomenclatureCode.paperFormatCode,

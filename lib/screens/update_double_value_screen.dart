@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/constants.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/prints/print_model.dart';
 
 class UpdateDoubleValueScreen extends StatelessWidget {
   final String updateText;
@@ -79,7 +79,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   print('$textFieldValue1 $textFieldValue2');
-                  Provider.of<PrintData>(context, listen: false)
+                  Provider.of<ProductData>(context, listen: false)
                       .updateDimensions(
                           printModel, textFieldValue1, textFieldValue2);
                   Navigator.pop(context);

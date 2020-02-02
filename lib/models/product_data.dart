@@ -1,30 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:work_board/constants.dart';
+import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/models/paper_dimension.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/prints/print_model.dart';
 
-class PrintData with ChangeNotifier {
+class ProductData with ChangeNotifier {
   //ProductType productType = ProductType.print;
 
-  List<PrintModel> products = [
+  List<dynamic> products = [
     PrintModel(
       paperType: PaperType.paper80,
       paperFormat: kDefaultFormats[0],
       colorType: ColorType.OneFaceColor,
       addCut: false,
     ),
+    VisitCardPrintModel(
+      isSpecialPaper: false,
+      bothSidePrinted: false,
+      isPlasticized: false,
+      type: ProductType.visit_card,
+    )
   ];
 
-  int get productCount {
-    return products.length;
+  ProductType currentType = ProductType.print;
+
+  dynamic get currentProducts {
+    return products.where((product) => product.type == currentType).toList();
   }
 
-  double get allPrintsValue {
+
+  int get productCount {
+    return currentProducts.length;
+    //return prints.length;
+  }
+
+  double get allCurrentTypeValue {
     double sum = 0;
-    for (PrintModel printModel in products) {
-      sum += printModel.value;
+
+    for (dynamic product in currentProducts) {
+      sum += product.value;
     }
     return sum;
+  }
+
+  void changeCurrentProduct(String productType){
+    kProductTypes.forEach((k, v) {
+      if (v == productType) currentType = k;
+    });
+    notifyListeners();
   }
 
   void updateQuantity(PrintModel printModel, String quantity) {

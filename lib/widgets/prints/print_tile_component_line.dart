@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/prints/print_model.dart';
 import 'package:work_board/screens/update_double_value_screen.dart';
 import 'package:work_board/widgets/color_face_rectangle.dart';
 import 'package:work_board/widgets/icon_face.dart';
 
-import '../constants.dart';
+import 'package:work_board/constants.dart';
 
 class PrintTileComponentLine extends StatelessWidget {
   final List<String> infos;
@@ -45,7 +45,7 @@ class PrintTileComponentLine extends StatelessWidget {
       rowWidgets.add(
         GestureDetector(
           onTap: () {
-            Provider.of<PrintData>(context, listen: false)
+            Provider.of<ProductData>(context, listen: false)
                 .deletePrintModel(printModel);
           },
           child: Icon(
@@ -78,7 +78,7 @@ class PrintTileComponentLine extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
-                  child: returnEditWidget(rowIdentifier, printModel),
+                  child: componentToBeEdited(rowIdentifier, printModel),
                 ),
               ),
               isScrollControlled: true,

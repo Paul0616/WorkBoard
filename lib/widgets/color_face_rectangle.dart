@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/prints/print_model.dart';
 
 class ColorFaceRectangle extends StatelessWidget {
   final Color color;
@@ -13,7 +13,7 @@ class ColorFaceRectangle extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<PrintData>(context, listen: false)
+        Provider.of<ProductData>(context, listen: false)
             .updateColorType(printModel, firstFace);
       },
       child: Container(

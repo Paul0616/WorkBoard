@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/prints/print_model.dart';
 
 import '../constants.dart';
 
 class ListWithTitle extends StatelessWidget {
   ListWithTitle({
-    @required this.updateText,
+    @required this.listTitle,
     @required this.printModel,
     @required this.nomenclatureValues,
     @required this.code,
   });
 
-  final String updateText;
+  final String listTitle;
   final PrintModel printModel;
   final List<String> nomenclatureValues;
   final NomenclatureCode code;
@@ -29,7 +29,7 @@ class ListWithTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
-            updateText,
+            listTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: kColor2,
@@ -43,9 +43,14 @@ class ListWithTitle extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Provider.of<PrintData>(context, listen: false)
-                        .updateValueFromNomenclature(
-                            printModel, nomenclatureValues[index], code);
+                    if(code != NomenclatureCode.productsCode) {
+                      Provider.of<ProductData>(context, listen: false)
+                          .updateValueFromNomenclature(
+                          printModel, nomenclatureValues[index], code);
+                    } else {
+                      Provider.of<ProductData>(context, listen: false)
+                          .changeCurrentProduct(nomenclatureValues[index]);
+                    }
                     Navigator.pop(context);
                   },
                   child: ListTile(

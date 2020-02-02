@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:work_board/constants.dart';
-import 'package:work_board/models/print_data.dart';
-import 'package:work_board/models/print_model.dart';
+import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/prints/print_model.dart';
 
-import 'package:work_board/widgets/print_tile_component_line.dart';
+import 'package:work_board/widgets/prints/print_tile_component_line.dart';
 
 class PrintTile extends StatelessWidget {
   final PrintModel printModel;
@@ -15,19 +15,7 @@ class PrintTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    int printCountColorA4 = printModel.printsCountColorA4();
-//    int printCountBlackWhiteA4 = printModel.printsCountBlackWhiteA4();
-//    double priceColorA4 =
-//        printModel.getPriceForColorA4(printCountColorA4, printModel.paperType);
-//    double priceBlackWhiteA4 = printModel.getPriceForBlackWhiteA4(
-//        printCountBlackWhiteA4, printModel.paperType);
-//    double valueBlackWhite =
-//        double.parse(priceBlackWhiteA4.toStringAsFixed(2)) *
-//            printCountBlackWhiteA4;
-//    double valueColor =
-//        double.parse(priceColorA4.toStringAsFixed(2)) * printCountColorA4;
-//    printModel.value = valueColor + valueBlackWhite;
-    // printModel.refreshPrices();
+
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -69,7 +57,7 @@ class PrintTile extends StatelessWidget {
             canBeEdited: false,
             canBeDeleted: false,
             showCheckedFunction: (checkboxState) {
-              Provider.of<PrintData>(context, listen: false)
+              Provider.of<ProductData>(context, listen: false)
                   .updateCuts(printModel);
             },
             printModel: printModel,
