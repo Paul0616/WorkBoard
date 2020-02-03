@@ -7,6 +7,13 @@ class ProductModel {
   int quantity = 0;
   bool isActive = true;
 
-
   ProductModel({this.type = ProductType.print});
+
+  String get title {
+    String t = '';
+    kProductTypes.forEach((k, v) {
+      if (k == type) t = v;
+    });
+    return t;
+  }
 }

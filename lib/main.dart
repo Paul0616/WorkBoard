@@ -12,6 +12,9 @@ void main() {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+            primaryColor: Colors.green,
+            textTheme: TextTheme(subhead: TextStyle(color: Colors.black54))),
         debugShowCheckedModeBanner: false,
         home: ProductScreen(),
       ),

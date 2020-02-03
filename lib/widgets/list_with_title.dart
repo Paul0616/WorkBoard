@@ -54,12 +54,14 @@ class ListWithTitle extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: ListTile(
+                    selected: Provider.of<ProductData>(context)
+                        .productHaveValue(nomenclatureValues[index]),
                     title: Text(
                       nomenclatureValues[index],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black54,
+                        //color: Colors.black54,
                       ),
                     ),
                   ),

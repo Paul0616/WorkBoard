@@ -42,6 +42,20 @@ class ProductData with ChangeNotifier {
     return sum;
   }
 
+  bool productHaveValue(String title) {
+    double sum = 0;
+    ProductType type;
+    kProductTypes.forEach((k, v) {
+      if (v == title) type = k;
+    });
+    List<dynamic> prod =
+        products.where((product) => product.type == type).toList();
+    for (dynamic product in prod) {
+      sum += product.value;
+    }
+    return sum != 0;
+  }
+
   double get allValue {
     double sum = 0;
 
