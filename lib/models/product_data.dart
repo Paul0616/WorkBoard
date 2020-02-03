@@ -14,12 +14,12 @@ class ProductData with ChangeNotifier {
       colorType: ColorType.OneFaceColor,
       addCut: false,
     ),
-    VisitCardPrintModel(
+    VisitCardModel(
       isSpecialPaper: false,
       bothSidePrinted: false,
       isPlasticized: false,
       type: ProductType.visit_card,
-    )
+    ),
   ];
 
   ProductType currentType = ProductType.print;
@@ -27,7 +27,6 @@ class ProductData with ChangeNotifier {
   dynamic get currentProducts {
     return products.where((product) => product.type == currentType).toList();
   }
-
 
   int get productCount {
     return currentProducts.length;
@@ -43,36 +42,91 @@ class ProductData with ChangeNotifier {
     return sum;
   }
 
-  void changeCurrentProduct(String productType){
+  double get allValue {
+    double sum = 0;
+
+    for (dynamic product in products) {
+      sum += product.value;
+    }
+    return sum;
+  }
+
+  void changeCurrentProduct(String productType) {
     kProductTypes.forEach((k, v) {
       if (v == productType) currentType = k;
     });
     notifyListeners();
   }
 
-  void updateQuantity(PrintModel printModel, String quantity) {
+  void updateQuantity(dynamic model, String quantity) {
     try {
       int q = int.parse(quantity);
-      printModel.quantity = q;
-      printModel.refreshPrices();
+      model.quantity = q;
+      model.refreshPrices();
+//      if (model is PrintModel) model.refreshPrices();
+//      if (model is VisitCardModel) model.refreshPrices();
       notifyListeners();
     } catch (e) {
       print(e);
     }
   }
 
-  void deletePrintModel(PrintModel printModel) {
-    products.remove(printModel);
+  void deletePrintModel(dynamic model) {
+    products.remove(model);
     notifyListeners();
   }
 
-  void addPrint() {
-    products.add(PrintModel(
-      paperType: PaperType.paper80,
-      paperFormat: kDefaultFormats[0],
-      colorType: ColorType.OneFaceColor,
-      addCut: false,
-    ));
+  void addPrint(ProductType type) {
+    print(type);
+    switch (type) {
+      case ProductType.book:
+        // TODO: Handle this case.
+        break;
+      case ProductType.print:
+        products.add(PrintModel(
+          paperType: PaperType.paper80,
+          paperFormat: kDefaultFormats[0],
+          colorType: ColorType.OneFaceColor,
+          addCut: false,
+        ));
+        break;
+      case ProductType.visit_card:
+        products.add(VisitCardModel(
+          isSpecialPaper: false,
+          bothSidePrinted: false,
+          isPlasticized: false,
+          type: ProductType.visit_card,
+        ));
+        break;
+      case ProductType.folder:
+        // TODO: Handle this case.
+        break;
+      case ProductType.poster:
+        // TODO: Handle this case.
+        break;
+      case ProductType.big_print:
+        // TODO: Handle this case.
+        break;
+      case ProductType.wall_sticker:
+        // TODO: Handle this case.
+        break;
+      case ProductType.cut_sheets:
+        // TODO: Handle this case.
+        break;
+      case ProductType.cut_paper_sticker:
+        // TODO: Handle this case.
+        break;
+      case ProductType.engraving:
+        // TODO: Handle this case.
+        break;
+      case ProductType.textile_printing:
+        // TODO: Handle this case.
+        break;
+      case ProductType.finishing:
+        // TODO: Handle this case.
+        break;
+    }
+
     notifyListeners();
   }
 
@@ -101,6 +155,23 @@ class ProductData with ChangeNotifier {
   void updateCuts(PrintModel printModel) {
     printModel.toggleAddCut();
     printModel.refreshPrices();
+    notifyListeners();
+  }
+
+  void updateCVProperties(VisitCardModel model, VisitCardsProperties property) {
+    switch (property) {
+      case VisitCardsProperties.isPlasticized:
+        model.togglePlasticized();
+        break;
+      case VisitCardsProperties.bothSides:
+        model.toggleBothSide();
+        break;
+      case VisitCardsProperties.isSpecialPaper:
+        model.toggleSpecialPaper();
+        break;
+    }
+
+    model.refreshPrices();
     notifyListeners();
   }
 

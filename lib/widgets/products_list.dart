@@ -6,7 +6,6 @@ import 'package:work_board/widgets/vistCards/visit_card_tile.dart';
 
 import '../constants.dart';
 
-
 class ProductsList extends StatelessWidget {
   final productType;
   ProductsList({this.productType});
@@ -18,11 +17,15 @@ class ProductsList extends StatelessWidget {
         switch (productType) {
           case ProductType.print:
             return PrintTile(
-              printModel: Provider.of<ProductData>(context).currentProducts[index],
+              printModel:
+                  Provider.of<ProductData>(context).currentProducts[index],
             );
             break;
           case ProductType.visit_card:
-            return VisitCardTile();
+            return VisitCardTile(
+              visitCardModel:
+                  Provider.of<ProductData>(context).currentProducts[index],
+            );
             break;
           default:
             {

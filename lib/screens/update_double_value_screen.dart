@@ -33,7 +33,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
                 updateText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kColor2,
+                  color: kColorTop,
                   fontSize: 30.0,
                 ),
               ),
@@ -49,7 +49,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(
                       width: 2.0,
-                      color: kColor2,
+                      color: kColorTop,
                     ),
                   ),
                 ),
@@ -68,7 +68,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(
                       width: 2.0,
-                      color: kColor2,
+                      color: kColorTop,
                     ),
                   ),
                 ),
@@ -85,7 +85,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: Text('Add'),
-                color: kColor2,
+                color: kColorTop,
                 textColor: Colors.white,
               )
             ],

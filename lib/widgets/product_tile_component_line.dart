@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
+import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/screens/update_double_value_screen.dart';
+import 'package:work_board/screens/update_single_value_screen.dart';
 import 'package:work_board/widgets/color_face_rectangle.dart';
 import 'package:work_board/widgets/icon_face.dart';
 
 import 'package:work_board/constants.dart';
 
-class PrintTileComponentLine extends StatelessWidget {
+class ProductTileComponentLine extends StatelessWidget {
   final List<String> infos;
   final String description;
   final Color color;
@@ -17,9 +19,10 @@ class PrintTileComponentLine extends StatelessWidget {
   final bool descriptionCanBeEdited;
 
   final Function showCheckedFunction;
-  final PrintModel printModel;
+  final VisitCardsProperties property;
+  final dynamic model;
 
-  PrintTileComponentLine(
+  ProductTileComponentLine(
       {@required this.infos,
       this.color,
       @required this.canBeEdited,
@@ -27,7 +30,8 @@ class PrintTileComponentLine extends StatelessWidget {
       this.description,
       this.descriptionCanBeEdited,
       this.showCheckedFunction,
-      this.printModel});
+      this.property,
+      this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +44,16 @@ class PrintTileComponentLine extends StatelessWidget {
           fontWeight: color != null ? FontWeight.bold : FontWeight.normal,
         ),
       ));
+      rowWidgets.add(Spacer());
     }
     if (canBeDeleted) {
+      rowWidgets.add(Spacer());
+
       rowWidgets.add(
         GestureDetector(
           onTap: () {
             Provider.of<ProductData>(context, listen: false)
-                .deletePrintModel(printModel);
+                .deletePrintModel(model);
           },
           child: Icon(
             Icons.delete,
@@ -54,13 +61,28 @@ class PrintTileComponentLine extends StatelessWidget {
           ),
         ),
       );
+      rowWidgets.add(SizedBox(
+        width: 15.0,
+      ));
     }
+
+    bool valueForCheckedFunction = false;
+    if (model is PrintModel) valueForCheckedFunction = model.addCut;
+    if (model is VisitCardModel) {
+      if (property == VisitCardsProperties.bothSides)
+        valueForCheckedFunction = model.bothSidePrinted;
+      if (property == VisitCardsProperties.isPlasticized)
+        valueForCheckedFunction = model.isPlasticized;
+      if (property == VisitCardsProperties.isSpecialPaper)
+        valueForCheckedFunction = model.isSpecialPaper;
+    }
+
     if (showCheckedFunction != null) {
       rowWidgets.add(
         Checkbox(
-          focusColor: kColor2,
-          activeColor: kColor2,
-          value: printModel.addCut,
+          focusColor: kColorTop,
+          activeColor: kColorTop,
+          value: valueForCheckedFunction,
           onChanged: showCheckedFunction,
         ),
       );
@@ -78,7 +100,34 @@ class PrintTileComponentLine extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
-                  child: componentToBeEdited(rowIdentifier, printModel),
+                  child: componentToBeEdited(rowIdentifier, model),
+                ),
+              ),
+              isScrollControlled: true,
+            );
+          },
+          child: Icon(
+            Icons.arrow_drop_down,
+          ),
+        ),
+      );
+    }
+
+    if (canBeEdited && model is VisitCardModel) {
+      rowWidgets.add(
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: UpdateSingleValueScreen(
+                    updateText: 'Tiraj',
+                    model: model,
+                  ),
                 ),
               ),
               isScrollControlled: true,
@@ -123,7 +172,7 @@ class PrintTileComponentLine extends StatelessWidget {
                     ),
                     child: UpdateDoubleValueScreen(
                       updateText: 'Dimensiuni:',
-                      printModel: printModel,
+                      printModel: model,
                     ),
                   ),
                 ),
@@ -150,8 +199,8 @@ class PrintTileComponentLine extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(8.0),
-      decoration:
-          decorationBox.copyWith(color: color != null ? kColor3 : kColor1),
+      decoration: decorationBox.copyWith(
+          color: color != null ? kColorAccent : kColorBottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: columnWidgets,

@@ -6,7 +6,7 @@ import 'package:work_board/constants.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
 
-import 'package:work_board/widgets/prints/print_tile_component_line.dart';
+import 'package:work_board/widgets/product_tile_component_line.dart';
 
 class PrintTile extends StatelessWidget {
   final PrintModel printModel;
@@ -15,30 +15,29 @@ class PrintTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
         children: <Widget>[
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Hartie']} ${printModel.getPaperTypeName()}',
               '${printModel.value.toStringAsFixed(2)} lei'
             ],
-            color: kColor3,
+            color: kColorAccent,
             canBeEdited: true,
             canBeDeleted: true,
-            printModel: printModel,
+            model: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Tiraj']} ${printModel.quantity.toStringAsFixed(0)} buc',
             ],
             canBeEdited: true,
             canBeDeleted: false,
-            printModel: printModel,
+            model: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Format']} ${EnumToString.parse(printModel.paperFormat.format)}',
             ],
@@ -48,9 +47,9 @@ class PrintTile extends StatelessWidget {
                 printModel.paperFormat.format == PaperFormatEnum.LxH,
             canBeEdited: true,
             canBeDeleted: false,
-            printModel: printModel,
+            model: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Taiere']} ${printModel.getA3FitCount()['cut']}',
             ],
@@ -60,13 +59,13 @@ class PrintTile extends StatelessWidget {
               Provider.of<ProductData>(context, listen: false)
                   .updateCuts(printModel);
             },
-            printModel: printModel,
+            model: printModel,
           ),
           PrintTileComponentLine1(
             infos: ['${kPrintModelRowsLabels['Imprimare']}'],
             printModel: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['A3']} ${printModel.getA3FitCount()['fitCount']} buc/A3',
               //62 buc (8x7)+(6x1)',
@@ -75,9 +74,9 @@ class PrintTile extends StatelessWidget {
             canBeDeleted: false,
             description: '${printModel.getA3FitCount()['description']}',
             descriptionCanBeEdited: false,
-            printModel: printModel,
+            model: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Costuri']}',
               'Color: ${printModel.printPriceColored} lei',
@@ -86,9 +85,9 @@ class PrintTile extends StatelessWidget {
             ],
             canBeEdited: false,
             canBeDeleted: false,
-            printModel: printModel,
+            model: printModel,
           ),
-          PrintTileComponentLine(
+          ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['Costuri']}',
               'A/N:   ${printModel.printPriceGray} lei',
@@ -97,7 +96,7 @@ class PrintTile extends StatelessWidget {
             ],
             canBeEdited: false,
             canBeDeleted: false,
-            printModel: printModel,
+            model: printModel,
           ),
         ],
       ),

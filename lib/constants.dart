@@ -21,9 +21,13 @@ List<double> preturiANcs = [1.15, 1.1, 1.05, 1.05, 1];
 
 const double kCuttingPrice = 0.25;
 
-const kColor1 = Colors.white;
-const kColor2 = Colors.red;
-const kColor3 = Colors.orangeAccent;
+//pt laminare se adauga 0.05 si pt fata verso se adauga 0.15,
+//pt carton special se adauga 0.1
+const double kVisitCardBasePrice = 0.4;
+
+const kColorBottom = Colors.white;
+const kColorTop = Colors.red;
+const kColorAccent = Colors.orangeAccent;
 
 const kNomenclatureHeight = 250.0;
 
@@ -93,6 +97,12 @@ enum PaperType {
   paperSpecial,
 }
 
+enum VisitCardsProperties {
+  isPlasticized,
+  bothSides,
+  isSpecialPaper,
+}
+
 const Map<PaperFormatEnum, String> kPaperFormat = {
   PaperFormatEnum.A3: 'A3 (297x420)',
   PaperFormatEnum.A4: 'A4 (210x297)',
@@ -157,7 +167,7 @@ const Map<String, String> kPrintModelRowsLabels = {
   'Taiere': 'Adaugă tăieri:',
   'Imprimare': 'Imprimare:',
   'A3': 'Încadrare:',
-  'Costuri': 'Costuri/A4:',
+  'Costuri': 'Cost/A4:',
 };
 
 String rowToBeModified(String info) {
@@ -191,7 +201,7 @@ Widget componentToBeEdited(String key, PrintModel printModel) {
       {
         return UpdateSingleValueScreen(
           updateText: 'Tiraj',
-          printModel: printModel,
+          model: printModel,
         );
       }
       break;

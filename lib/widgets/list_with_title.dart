@@ -32,7 +32,7 @@ class ListWithTitle extends StatelessWidget {
             listTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: kColor2,
+              color: kColorTop,
               fontSize: 30.0,
             ),
           ),
@@ -43,10 +43,10 @@ class ListWithTitle extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    if(code != NomenclatureCode.productsCode) {
+                    if (code != NomenclatureCode.productsCode) {
                       Provider.of<ProductData>(context, listen: false)
                           .updateValueFromNomenclature(
-                          printModel, nomenclatureValues[index], code);
+                              printModel, nomenclatureValues[index], code);
                     } else {
                       Provider.of<ProductData>(context, listen: false)
                           .changeCurrentProduct(nomenclatureValues[index]);

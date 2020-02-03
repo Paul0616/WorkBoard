@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/constants.dart';
 import 'package:work_board/models/product_data.dart';
-import 'package:work_board/models/prints/print_model.dart';
 
 class UpdateSingleValueScreen extends StatelessWidget {
   final String updateText;
-  final PrintModel printModel;
-  UpdateSingleValueScreen({this.updateText, this.printModel});
+  final dynamic model;
+  UpdateSingleValueScreen({this.updateText, this.model});
   @override
   Widget build(BuildContext context) {
-    String textFieldValue = printModel.quantity.toString();
+    String textFieldValue = model.quantity.toString();
     return Container(
       color: Color(0xFF757575),
       child: Container(
@@ -32,7 +31,7 @@ class UpdateSingleValueScreen extends StatelessWidget {
                 updateText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kColor2,
+                  color: kColorTop,
                   fontSize: 30.0,
                 ),
               ),
@@ -48,7 +47,7 @@ class UpdateSingleValueScreen extends StatelessWidget {
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(
                       width: 2.0,
-                      color: kColor2,
+                      color: kColorTop,
                     ),
                   ),
                 ),
@@ -60,11 +59,11 @@ class UpdateSingleValueScreen extends StatelessWidget {
                 onPressed: () {
                   //addTaskCallback(taskName);
                   Provider.of<ProductData>(context, listen: false)
-                      .updateQuantity(printModel, textFieldValue);
+                      .updateQuantity(model, textFieldValue);
                   Navigator.pop(context);
                 },
                 child: Text('Add'),
-                color: kColor2,
+                color: kColorTop,
                 textColor: Colors.white,
               )
             ],
