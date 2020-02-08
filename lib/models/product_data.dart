@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/folders/folder_model.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/models/paper_dimension.dart';
 import 'package:work_board/models/prints/print_model.dart';
@@ -8,18 +9,23 @@ class ProductData with ChangeNotifier {
   //ProductType productType = ProductType.print;
 
   List<dynamic> products = [
-    PrintModel(
-      paperType: PaperType.paper80,
-      paperFormat: kDefaultFormats[0],
-      colorType: ColorType.OneFaceColor,
-      addCut: false,
-    ),
-    VisitCardModel(
-      isSpecialPaper: false,
-      bothSidePrinted: false,
-      isPlasticized: false,
-      type: ProductType.visit_card,
-    ),
+//    PrintModel(
+//      paperType: PaperType.paper80,
+//      paperFormat: kDefaultFormats[0],
+//      colorType: ColorType.OneFaceColor,
+//      addCut: false,
+//    ),
+//    VisitCardModel(
+//      isSpecialPaper: false,
+//      bothSidePrinted: false,
+//      isPlasticized: false,
+//    ),
+//    FolderModel(
+//      isPlasticized: true,
+//      bothSidePrinted: false,
+//      doubleEdge: false,
+//      havePatchPocket: true,
+//    ),
   ];
 
   ProductType currentType = ProductType.print;
@@ -109,11 +115,15 @@ class ProductData with ChangeNotifier {
           isSpecialPaper: false,
           bothSidePrinted: false,
           isPlasticized: false,
-          type: ProductType.visit_card,
         ));
         break;
       case ProductType.folder:
-        // TODO: Handle this case.
+        products.add(FolderModel(
+          doubleEdge: false,
+          bothSidePrinted: false,
+          isPlasticized: true,
+          havePatchPocket: true,
+        ));
         break;
       case ProductType.poster:
         // TODO: Handle this case.
@@ -182,6 +192,26 @@ class ProductData with ChangeNotifier {
         break;
       case VisitCardsProperties.isSpecialPaper:
         model.toggleSpecialPaper();
+        break;
+    }
+
+    model.refreshPrices();
+    notifyListeners();
+  }
+
+  void updateFolderProperties(FolderModel model, FolderProperties property) {
+    switch (property) {
+      case FolderProperties.isPlasticized:
+        model.togglePlasticized();
+        break;
+      case FolderProperties.bothSides:
+        model.toggleBothSide();
+        break;
+      case FolderProperties.doubleEdge:
+        model.toggleDoubleEdge();
+        break;
+      case FolderProperties.havePatchPocket:
+        model.togglePatchPocket();
         break;
     }
 

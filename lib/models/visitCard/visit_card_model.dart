@@ -1,4 +1,4 @@
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_model.dart';
 
 class VisitCardModel extends ProductModel {
@@ -7,11 +7,8 @@ class VisitCardModel extends ProductModel {
   bool isPlasticized;
 
   VisitCardModel(
-      {this.isSpecialPaper,
-      this.bothSidePrinted,
-      this.isPlasticized,
-      ProductType type})
-      : super(type: type);
+      {this.isSpecialPaper, this.bothSidePrinted, this.isPlasticized})
+      : super(type: ProductType.visit_card);
 
   void refreshPrices() {
     double price = kVisitCardBasePrice;

@@ -2,7 +2,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
 
@@ -28,6 +28,7 @@ class PrintTile extends StatelessWidget {
             canBeEdited: true,
             canBeDeleted: true,
             model: printModel,
+            firstInfoIsBold: true,
           ),
           ProductTileComponentLine(
             infos: [

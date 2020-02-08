@@ -1,4 +1,4 @@
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 
 class ProductModel {
   ProductType type;
@@ -15,5 +15,9 @@ class ProductModel {
       if (k == type) t = v;
     });
     return t;
+  }
+
+  double pricePerUnit() {
+    return quantity != 0 ? value / quantity : 0;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:work_board/models/prints/print_model.dart';
 import 'package:work_board/widgets/list_with_title.dart';
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 
 class UpdateListScreen extends StatelessWidget {
   final String listTitle;
@@ -33,6 +33,4 @@ class UpdateListScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

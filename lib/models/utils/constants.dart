@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:work_board/screens/update_list_screen.dart';
 import 'package:work_board/screens/update_single_value_screen.dart';
 
-import 'models/paper_dimension.dart';
-import 'models/prints/print_model.dart';
+import '../paper_dimension.dart';
+import '../prints/print_model.dart';
 
 List<double> preturiColor80 = [1.4, 1.30, 1.20, 1.1, 0.95];
 List<double> preturiColor115 = [1.6, 1.5, 1.4, 1.3, 1.05];
@@ -24,6 +24,10 @@ const double kCuttingPrice = 0.25;
 //pt laminare se adauga 0.05 si pt fata verso se adauga 0.15,
 //pt carton special se adauga 0.1
 const double kVisitCardBasePrice = 0.4;
+
+const double kPatchPocketPrice = 2.0;
+const double kFoldingPrice = 0.25;
+const double kPlasticizingA3Price = 1.0;
 
 const kColorBottom = Colors.white;
 const kColorTop = Colors.red;
@@ -56,7 +60,7 @@ enum ProductType {
 }
 
 const Map<ProductType, String> kProductTypes = {
-  ProductType.book: 'Carte/Broșura/Pliant',
+  ProductType.book: 'Carte Broșura Pliant',
   ProductType.print: 'Printuri',
   ProductType.visit_card: 'Cărți Vizită',
   ProductType.folder: 'Mape',
@@ -101,6 +105,13 @@ enum VisitCardsProperties {
   isPlasticized,
   bothSides,
   isSpecialPaper,
+}
+
+enum FolderProperties {
+  isPlasticized,
+  bothSides,
+  doubleEdge,
+  havePatchPocket,
 }
 
 const Map<PaperFormatEnum, String> kPaperFormat = {

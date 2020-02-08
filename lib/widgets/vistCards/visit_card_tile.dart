@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/widgets/product_tile_component_line.dart';
@@ -67,6 +67,15 @@ class VisitCardTile extends StatelessWidget {
             property: VisitCardsProperties.isSpecialPaper,
             model: visitCardModel,
           ),
+          ProductTileComponentLine(
+            infos: [
+              'Carti vizita',
+              '${visitCardModel.pricePerUnit().toStringAsFixed(2)} lei/buc'
+            ],
+            canBeEdited: false,
+            canBeDeleted: false,
+            model: visitCardModel,
+          )
         ],
       ),
     );

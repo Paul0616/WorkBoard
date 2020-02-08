@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:work_board/models/folders/folder_model.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
@@ -8,10 +9,11 @@ import 'package:work_board/screens/update_single_value_screen.dart';
 import 'package:work_board/widgets/color_face_rectangle.dart';
 import 'package:work_board/widgets/icon_face.dart';
 
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 
 class ProductTileComponentLine extends StatelessWidget {
   final List<String> infos;
+  final bool firstInfoIsBold;
   final String description;
   final Color color;
   final bool canBeEdited;
@@ -19,11 +21,12 @@ class ProductTileComponentLine extends StatelessWidget {
   final bool descriptionCanBeEdited;
 
   final Function showCheckedFunction;
-  final VisitCardsProperties property;
+  final dynamic property;
   final dynamic model;
 
   ProductTileComponentLine(
       {@required this.infos,
+      this.firstInfoIsBold = false,
       this.color,
       @required this.canBeEdited,
       @required this.canBeDeleted,
@@ -41,7 +44,9 @@ class ProductTileComponentLine extends StatelessWidget {
         info,
         style: TextStyle(
           color: Colors.black54,
-          fontWeight: color != null ? FontWeight.bold : FontWeight.normal,
+          fontWeight: (firstInfoIsBold && info == infos.first)
+              ? FontWeight.bold
+              : FontWeight.normal,
         ),
       ));
       rowWidgets.add(Spacer());
@@ -75,6 +80,16 @@ class ProductTileComponentLine extends StatelessWidget {
         valueForCheckedFunction = model.isPlasticized;
       if (property == VisitCardsProperties.isSpecialPaper)
         valueForCheckedFunction = model.isSpecialPaper;
+    }
+    if (model is FolderModel) {
+      if (property == FolderProperties.bothSides)
+        valueForCheckedFunction = model.bothSidePrinted;
+      if (property == FolderProperties.isPlasticized)
+        valueForCheckedFunction = model.isPlasticized;
+      if (property == FolderProperties.doubleEdge)
+        valueForCheckedFunction = model.doubleEdge;
+      if (property == FolderProperties.havePatchPocket)
+        valueForCheckedFunction = model.havePatchPocket;
     }
 
     if (showCheckedFunction != null) {
@@ -113,7 +128,7 @@ class ProductTileComponentLine extends StatelessWidget {
       );
     }
 
-    if (canBeEdited && model is VisitCardModel) {
+    if (canBeEdited && (model is VisitCardModel || model is FolderModel)) {
       rowWidgets.add(
         GestureDetector(
           onTap: () {

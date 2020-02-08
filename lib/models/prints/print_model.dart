@@ -1,6 +1,7 @@
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/paper_dimension.dart';
 import 'package:work_board/models/product_model.dart';
+import 'package:work_board/models/utils/print_calculator.dart';
 
 class PrintModel extends ProductModel {
   PaperType paperType;
@@ -159,102 +160,6 @@ class PrintModel extends ProductModel {
     return prCA4;
   }
 
-  int _getPriceLevel(int pages) {
-    if (pages <= 5) return 1;
-    if (pages > 5 && pages <= 20) return 2;
-    if (pages > 20 && pages <= 100) return 3;
-    if (pages > 100 && pages <= 300) return 4;
-    if (pages > 300) return 5;
-    return 0;
-  }
-
-  double _linearDecreasePrice(int pages, List<double> prices, int priceLevel) {
-    double price;
-    switch (priceLevel) {
-      case 1:
-        {
-          price = prices[0] + ((pages - 1) * (prices[1] - prices[0]) / 5);
-          if (pages == 0) price = 0;
-        }
-        break;
-      case 2:
-        price = prices[1] + ((pages - 6) * (prices[2] - prices[1]) / 15);
-        break;
-      case 3:
-        price = prices[2] + ((pages - 21) * (prices[3] - prices[2]) / 80);
-        break;
-      case 4:
-        price = prices[3] + ((pages - 101) * (prices[4] - prices[3]) / 200);
-        break;
-      case 5:
-        price = prices[4];
-        break;
-      default:
-        price = 0;
-        break;
-    }
-    return price;
-  }
-
-  double _getPriceForBlackWhiteA4(int pages, PaperType paperType) {
-    double price = 0;
-    switch (paperType) {
-      case PaperType.paper80:
-        price = _linearDecreasePrice(pages, preturiAN80, _getPriceLevel(pages));
-        break;
-      case PaperType.paper115:
-        price =
-            _linearDecreasePrice(pages, preturiAN115, _getPriceLevel(pages));
-        break;
-      case PaperType.paper150:
-        price =
-            _linearDecreasePrice(pages, preturiAN150, _getPriceLevel(pages));
-        break;
-      case PaperType.paper250:
-        price =
-            _linearDecreasePrice(pages, preturiAN250, _getPriceLevel(pages));
-        break;
-      case PaperType.paperSticker:
-        price = _linearDecreasePrice(pages, preturiANac, _getPriceLevel(pages));
-        break;
-      case PaperType.paperSpecial:
-        price = _linearDecreasePrice(pages, preturiANcs, _getPriceLevel(pages));
-        break;
-    }
-    return price;
-  }
-
-  double _getPriceForColorA4(int pages, PaperType paperType) {
-    double price = 0;
-    switch (paperType) {
-      case PaperType.paper80:
-        price =
-            _linearDecreasePrice(pages, preturiColor80, _getPriceLevel(pages));
-        break;
-      case PaperType.paper115:
-        price =
-            _linearDecreasePrice(pages, preturiColor115, _getPriceLevel(pages));
-        break;
-      case PaperType.paper150:
-        price =
-            _linearDecreasePrice(pages, preturiColor150, _getPriceLevel(pages));
-        break;
-      case PaperType.paper250:
-        price =
-            _linearDecreasePrice(pages, preturiColor250, _getPriceLevel(pages));
-        break;
-      case PaperType.paperSticker:
-        price =
-            _linearDecreasePrice(pages, preturiColorac, _getPriceLevel(pages));
-        break;
-      case PaperType.paperSpecial:
-        price =
-            _linearDecreasePrice(pages, preturiColorcs, _getPriceLevel(pages));
-        break;
-    }
-    return price;
-  }
-
   void refreshPrices() {
     int prints = _printsCountA4();
     printCountColored = _printsCountColorA4(prints);
@@ -262,10 +167,12 @@ class PrintModel extends ProductModel {
     printCountGray = _printsCountBlackWhiteA4(prints);
 
     printPriceColored = double.parse(
-        _getPriceForColorA4(printCountColored, paperType).toStringAsFixed(2));
+        PrintPriceCalculator.getPriceForColorA4(printCountColored, paperType)
+            .toStringAsFixed(2));
 
     printPriceGray = double.parse(
-        _getPriceForBlackWhiteA4(printCountGray, paperType).toStringAsFixed(2));
+        PrintPriceCalculator.getPriceForBlackWhiteA4(printCountGray, paperType)
+            .toStringAsFixed(2));
 
     value = printCountColored * printPriceColored +
         printCountGray * printPriceGray +

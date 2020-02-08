@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/constants.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
 
 class UpdateSingleValueScreen extends StatelessWidget {
