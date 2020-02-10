@@ -50,17 +50,17 @@ class UpdateSingleValueScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   textFieldValue = value;
-                  if (updateText == 'Pagini interior') {
-                    try {
-                      int multiple4 = int.parse(textFieldValue);
-                      Provider.of<ProductData>(context, listen: false)
-                          .setShowAlert(model, multiple4 % 4 != 0);
-
-                      //print(model.buttonDisabled);
-                    } catch (e) {
-                      print(e);
-                    }
-                  }
+//                  if (updateText == 'Pagini interior') {
+//                    try {
+//                      int multiple4 = int.parse(textFieldValue);
+//                      Provider.of<ProductData>(context, listen: false)
+//                          .setShowAlert(model, multiple4 % 4 != 0);
+//
+//                      //print(model.buttonDisabled);
+//                    } catch (e) {
+//                      print(e);
+//                    }
+//                  }
                 },
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
@@ -77,15 +77,23 @@ class UpdateSingleValueScreen extends StatelessWidget {
               FlatButton(
                 disabledColor: kColorTop.withAlpha(50),
                 onPressed: () {
-                        //addTaskCallback(taskName);
-                        if (updateText == 'Pagini interior')
-                          Provider.of<ProductData>(context, listen: false)
-                              .updatePagInterior(model, textFieldValue);
-                        else
-                          Provider.of<ProductData>(context, listen: false)
-                              .updateQuantity(model, textFieldValue);
-                        Navigator.pop(context);
-                      },
+                  //addTaskCallback(taskName);
+                  Navigator.pop(context);
+                  if (updateText == 'Pagini interior') {
+                    int val = int.parse(textFieldValue);
+
+                    if (val % 4 == 0) {
+                      Provider.of<ProductData>(context, listen: false)
+                          .updatePagInterior(model, textFieldValue);
+                    } else {
+
+                      showAlertDialog(context);
+                    }
+                  } else
+                    Provider.of<ProductData>(context, listen: false)
+                        .updateQuantity(model, textFieldValue);
+
+                },
                 child: Text('Modifica'),
                 color: kColorTop,
                 textColor: Colors.white,
@@ -98,14 +106,11 @@ class UpdateSingleValueScreen extends StatelessWidget {
   }
 
   showAlertDialog(BuildContext context) {
-
 //     set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.of(context).pop();
-        Provider.of<ProductData>(context, listen: false)
-            .setShowAlert(bookModel, false);
       },
     );
 
