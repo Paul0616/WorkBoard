@@ -1,12 +1,12 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:work_board/models/book/book_model.dart';
-import 'package:work_board/models/product_data.dart';
+
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/utils/print_calculator.dart';
 import '../product_tile_component_line.dart';
 import '../product_tile_component_line_book.dart';
+import '../product_tile_component_line_book_binding.dart';
 
 class BookTile extends StatelessWidget {
   final BookModel bookModel;
@@ -15,7 +15,6 @@ class BookTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -35,12 +34,16 @@ class BookTile extends StatelessWidget {
               'Format carte ÎNCHISĂ: ${EnumToString.parse(bookModel.paperFormat.format)}',
             ],
             description:
-            'L(mm): ${bookModel.paperFormat.widthL}  H(mm): ${bookModel.paperFormat.lengthH}',
+                'L(mm): ${bookModel.paperFormat.widthL}  H(mm): ${bookModel.paperFormat.lengthH}',
             descriptionCanBeEdited:
-            bookModel.paperFormat.format == PaperFormatEnum.LxH,
+                bookModel.paperFormat.format == PaperFormatEnum.LxH,
             canBeEdited: true,
             canBeDeleted: false,
             model: bookModel,
+          ),
+          BookTileComponentLineBinding(
+            infos: ['Mod legare:'],
+            bookModel: bookModel,
           ),
           ProductTileComponentLine(
             infos: [
@@ -63,7 +66,7 @@ class BookTile extends StatelessWidget {
           ProductTileComponentLine(
             infos: [
               '${kPrintModelRowsLabels['A3']} ${bookModel.fitsOnA3} buc/A3',
-              //62 buc (8x7)+(6x1)',
+              '${bookModel.interiorPrints} printuri',
             ],
             canBeEdited: false,
             canBeDeleted: false,
@@ -78,13 +81,19 @@ class BookTile extends StatelessWidget {
             bookModel: bookModel,
             radioType: 'insideColor',
           ),
+          ProductTileComponentLine(
+            infos: [
+              '${kPrintModelRowsLabels['Costuri']}',
+              'Color: ${bookModel.colorTypeBookInside == ColorTypeBookInside.Color ? 1 : 0} lei',
+              'x ${bookModel.colorTypeBookInside == ColorTypeBookInside.Color ? bookModel.interiorPrints : 0} A4',
+              '= ${(bookModel.interiorPrints * 1).toStringAsFixed(2)} lei',
+            ],
+            canBeEdited: false,
+            canBeDeleted: false,
+            model: bookModel,
+          ),
         ],
-
       ),
     );
   }
-
-
 }
-
-

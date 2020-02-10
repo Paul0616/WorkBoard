@@ -86,13 +86,11 @@ class UpdateSingleValueScreen extends StatelessWidget {
                       Provider.of<ProductData>(context, listen: false)
                           .updatePagInterior(model, textFieldValue);
                     } else {
-
                       showAlertDialog(context);
                     }
                   } else
                     Provider.of<ProductData>(context, listen: false)
                         .updateQuantity(model, textFieldValue);
-
                 },
                 child: Text('Modifica'),
                 color: kColorTop,
@@ -107,20 +105,21 @@ class UpdateSingleValueScreen extends StatelessWidget {
 
   showAlertDialog(BuildContext context) {
 //     set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
+//    Widget okButton = FlatButton(
+//      child: Text("OK"),
+//      onPressed: () {
+//        Navigator.pop(context);
+//      },
+//    );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: Text("This is my message."),
-      actions: [
-        okButton,
-      ],
+      title: Text("Pagini interior"),
+      content: Text(
+          "Numărul de pagini pentru interiorul cărții trebuie să fie multiplu de 4."),
+//      actions: [
+//        okButton,
+//      ],
     );
 
     // show the dialog

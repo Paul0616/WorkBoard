@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
-import 'package:work_board/models/utils/print_calculator.dart';
 
 import 'package:work_board/widgets/product_tile_component_line.dart';
 

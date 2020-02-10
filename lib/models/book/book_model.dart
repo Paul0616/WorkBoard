@@ -14,10 +14,10 @@ class BookModel extends ProductModel {
   Binding binding;
   CoversPlasticizing coversPlasticizing;
 
-
   int fitsOnA3 = 1;
   String fitsDescription = '';
- // int printCountColored = 0;
+  int interiorPrints = 0;
+  // int printCountColored = 0;
 //  int printCountGray = 0;
 //  double printPriceColored = 0;
 //  double printPriceGray = 0;
@@ -37,6 +37,33 @@ class BookModel extends ProductModel {
   String getPaperTypeName(PaperType paperType) {
     return kPaperType[paperType];
   }
+
+  void toggleSpiralBinding() {
+    switch (binding) {
+      case Binding.SpiralBindingPortrait:
+        binding = Binding.SpiralBindingLandscape;
+        break;
+      case Binding.SpiralBindingLandscape:
+        binding = Binding.SpiralBindingPortrait;
+        break;
+      default:
+        binding = Binding.SpiralBindingPortrait;
+        break;
+    }
+  }
+
+  void setStaplingBinding() {
+    binding = Binding.Stapling;
+  }
+
+  void setBondingBinding() {
+    binding = Binding.Bonding;
+  }
+
+  void setColorTypeInterior(ColorTypeBookInside val) {
+    colorTypeBookInside = val;
+  }
+
 //  void toggleBothSide() {
 //    bothSidePrinted = !bothSidePrinted;
 //  }
@@ -57,6 +84,7 @@ class BookModel extends ProductModel {
     Map<String, String> result = PrintPriceCalculator.getA3FitCount(this);
     fitsOnA3 = int.parse(result['fitCount']);
     fitsDescription = result['description'];
+    interiorPrints = PrintPriceCalculator.countInteriorsForPrinting(this);
 //    int folderQuantity = quantity * 2;
 //    if (bothSidePrinted) folderQuantity *= 2;
 //    //must multipli with 2 or 4 because calculator get price for A4 and folder is A3

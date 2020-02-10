@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:work_board/models/book/book_model.dart';
+import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/utils/constants.dart';
 
 class PrintTileComponentLineRadio extends StatelessWidget {
@@ -8,6 +10,7 @@ class PrintTileComponentLineRadio extends StatelessWidget {
   final String radioType;
 
   PrintTileComponentLineRadio({this.infos, this.bookModel, this.radioType});
+
   @override
   Widget build(BuildContext context) {
     List<Widget> rowWidgetsInfos = [];
@@ -21,23 +24,32 @@ class PrintTileComponentLineRadio extends StatelessWidget {
       ));
     }
 
-    switch(radioType){
+    switch (radioType) {
       case 'insideColor':
         {
           List<Widget> radios = [];
-          kColorTypeBookInside.forEach((k, v){
+          kColorTypeBookInside.forEach((k, v) {
             radios.add(Column(
-
               children: <Widget>[
                 Radio(
-                  value: k.toString(),
-                  groupValue: bookModel.colorTypeBookInside.toString(),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: k.index,
+                  groupValue: bookModel.colorTypeBookInside.index,
                   activeColor: kColorTop,
-                  onChanged: (val){
-                    print(val);
+                  onChanged: (val) {
+//                    print(bookModel.colorTypeBookInside);
+//                    print(val);
+                    Provider.of<ProductData>(context, listen: false)
+                        .updateInteriorColor(bookModel, val);
                   },
                 ),
-                Text(v),
+                Text(
+                  v,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 10,
+                  ),
+                ),
               ],
             ));
           });
