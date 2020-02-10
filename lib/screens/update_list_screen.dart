@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:work_board/models/prints/print_model.dart';
 import 'package:work_board/widgets/list_with_title.dart';
 import 'package:work_board/models/utils/constants.dart';
 
 class UpdateListScreen extends StatelessWidget {
   final String listTitle;
-  final PrintModel printModel;
+  final dynamic model;
   final List<String> nomenclatureValues;
   final NomenclatureCode code;
 
   UpdateListScreen(
-      {this.nomenclatureValues, this.printModel, this.listTitle, this.code});
+      {this.nomenclatureValues, this.model, this.listTitle, this.code});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class UpdateListScreen extends StatelessWidget {
         ),
         child: ListWithTitle(
           listTitle: listTitle,
-          printModel: printModel,
+          model: model,
           nomenclatureValues: nomenclatureValues,
           code: code,
         ),

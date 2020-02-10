@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:work_board/models/book/book_model.dart';
 import 'package:work_board/models/folders/folder_model.dart';
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
@@ -26,6 +27,14 @@ class ProductData with ChangeNotifier {
 //      doubleEdge: false,
 //      havePatchPocket: true,
 //    ),
+
+    BookModel(
+      paperFormat: kDefaultFormats[0],
+      colorTypeBookCovers: [
+        ColorTypeBookCovers.TwoFacesColor,
+        ColorTypeBookCovers.TwoFacesColor,
+      ],
+    ),
   ];
 
   ProductType currentType = ProductType.print;
@@ -83,8 +92,24 @@ class ProductData with ChangeNotifier {
       int q = int.parse(quantity);
       model.quantity = q;
       model.refreshPrices();
-//      if (model is PrintModel) model.refreshPrices();
-//      if (model is VisitCardModel) model.refreshPrices();
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void setShowAlert(dynamic model, bool value) {
+    model.showAlert = value;
+    notifyListeners();
+  }
+
+  void updatePagInterior(dynamic model, String pagInterior) {
+    try {
+      int p = int.parse(pagInterior);
+      if (!model.showAlert) {
+        model.insidePageCountMultiple4 = p;
+      }
+      model.refreshPrices();
       notifyListeners();
     } catch (e) {
       print(e);
@@ -100,13 +125,19 @@ class ProductData with ChangeNotifier {
     print(type);
     switch (type) {
       case ProductType.book:
-        // TODO: Handle this case.
+        products.add(BookModel(
+          paperFormat: kDefaultFormats[0],
+          colorTypeBookCovers: [
+            ColorTypeBookCovers.TwoFacesColor,
+            ColorTypeBookCovers.TwoFacesColor,
+          ],
+        ));
         break;
       case ProductType.print:
         products.add(PrintModel(
           paperType: PaperType.paper80,
           paperFormat: kDefaultFormats[0],
-          colorType: ColorType.OneFaceColor,
+          colorType: ColorTypePrints.OneFaceColor,
           addCut: false,
         ));
         break;
@@ -155,10 +186,10 @@ class ProductData with ChangeNotifier {
   }
 
   void updateValueFromNomenclature(
-      PrintModel printModel, String type, NomenclatureCode code) {
+      dynamic model, String type, NomenclatureCode code) {
     if (code == NomenclatureCode.paperTypeCode) {
       kPaperType.forEach((k, v) {
-        if (v == type) printModel.paperType = k;
+        if (v == type) model.paperType = k;
       });
     }
     if (code == NomenclatureCode.paperFormatCode) {
@@ -166,13 +197,13 @@ class ProductData with ChangeNotifier {
         if (v == type) {
           for (PaperDimensions dim in kDefaultFormats) {
             if (dim.format == k) {
-              printModel.paperFormat = dim;
+              model.paperFormat = dim;
             }
           }
         }
       });
     }
-    printModel.refreshPrices();
+    model.refreshPrices();
     notifyListeners();
   }
 
@@ -231,13 +262,13 @@ class ProductData with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateDimensions(PrintModel printModel, String l, String h) {
+  void updateDimensions(dynamic model, String l, String h) {
     try {
       double widthL = double.parse(l);
       double lengthH = double.parse(h);
-      printModel.paperFormat.widthL = widthL;
-      printModel.paperFormat.lengthH = lengthH;
-      printModel.refreshPrices();
+      model.paperFormat.widthL = widthL;
+      model.paperFormat.lengthH = lengthH;
+      model.refreshPrices();
       notifyListeners();
     } catch (e) {
       print(e);

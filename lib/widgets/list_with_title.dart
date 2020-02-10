@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/product_data.dart';
-import 'package:work_board/models/prints/print_model.dart';
 
 import '../models/utils/constants.dart';
 
 class ListWithTitle extends StatelessWidget {
   ListWithTitle({
     @required this.listTitle,
-    @required this.printModel,
+    @required this.model,
     @required this.nomenclatureValues,
     @required this.code,
   });
 
   final String listTitle;
-  final PrintModel printModel;
+  final dynamic model;
   final List<String> nomenclatureValues;
   final NomenclatureCode code;
 
@@ -46,7 +45,7 @@ class ListWithTitle extends StatelessWidget {
                     if (code != NomenclatureCode.productsCode) {
                       Provider.of<ProductData>(context, listen: false)
                           .updateValueFromNomenclature(
-                              printModel, nomenclatureValues[index], code);
+                              model, nomenclatureValues[index], code);
                     } else {
                       Provider.of<ProductData>(context, listen: false)
                           .changeCurrentProduct(nomenclatureValues[index]);

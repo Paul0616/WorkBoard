@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
 import 'package:work_board/models/prints/print_model.dart';
+import 'package:work_board/models/utils/print_calculator.dart';
 
 import 'package:work_board/widgets/product_tile_component_line.dart';
+
+import '../product_tile_component_line_prints_color.dart';
 
 class PrintTile extends StatelessWidget {
   final PrintModel printModel;
@@ -28,7 +31,6 @@ class PrintTile extends StatelessWidget {
             canBeEdited: true,
             canBeDeleted: true,
             model: printModel,
-            firstInfoIsBold: true,
           ),
           ProductTileComponentLine(
             infos: [
@@ -52,7 +54,7 @@ class PrintTile extends StatelessWidget {
           ),
           ProductTileComponentLine(
             infos: [
-              '${kPrintModelRowsLabels['Taiere']} ${printModel.getA3FitCount()['cut']}',
+              '${kPrintModelRowsLabels['Taiere']} ${printModel.cuts}',
             ],
             canBeEdited: false,
             canBeDeleted: false,
@@ -62,18 +64,18 @@ class PrintTile extends StatelessWidget {
             },
             model: printModel,
           ),
-          PrintTileComponentLine1(
+          PrintTileComponentLinePrintsColor(
             infos: ['${kPrintModelRowsLabels['Imprimare']}'],
             printModel: printModel,
           ),
           ProductTileComponentLine(
             infos: [
-              '${kPrintModelRowsLabels['A3']} ${printModel.getA3FitCount()['fitCount']} buc/A3',
+              '${kPrintModelRowsLabels['A3']} ${printModel.fitsOnA3} buc/A3',
               //62 buc (8x7)+(6x1)',
             ],
             canBeEdited: false,
             canBeDeleted: false,
-            description: '${printModel.getA3FitCount()['description']}',
+            description: '${printModel.fitsDescription}',
             descriptionCanBeEdited: false,
             model: printModel,
           ),

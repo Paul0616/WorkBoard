@@ -7,7 +7,17 @@ class ProductModel {
   int quantity = 0;
   bool isActive = true;
 
+  bool _showAlert = false;
+
   ProductModel({this.type = ProductType.print});
+
+
+  bool get showAlert {
+    return _showAlert;
+  }
+  set showAlert (val) {
+    _showAlert = val;
+  }
 
   String get title {
     String t = '';

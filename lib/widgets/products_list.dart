@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/product_data.dart';
+import 'package:work_board/widgets/book/book_tile.dart';
 import 'package:work_board/widgets/folders/folder_tile.dart';
 import 'package:work_board/widgets/prints/print_tile.dart';
 import 'package:work_board/widgets/vistCards/visit_card_tile.dart';
@@ -30,6 +31,11 @@ class ProductsList extends StatelessWidget {
           case ProductType.folder:
             return FolderTile(
               folderModel: model,
+            );
+            break;
+          case ProductType.book:
+            return BookTile(
+              bookModel: model,
             );
             break;
           default:

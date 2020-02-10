@@ -6,8 +6,6 @@ import 'package:work_board/models/prints/print_model.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/screens/update_double_value_screen.dart';
 import 'package:work_board/screens/update_single_value_screen.dart';
-import 'package:work_board/widgets/color_face_rectangle.dart';
-import 'package:work_board/widgets/icon_face.dart';
 
 import 'package:work_board/models/utils/constants.dart';
 
@@ -103,32 +101,39 @@ class ProductTileComponentLine extends StatelessWidget {
       );
     }
 
-    String rowIdentifier = rowToBeModified(infos[0]);
+    String rowIdentifier = rowToBeModified(infos[0], model.type);
+
     if (canBeEdited && rowIdentifier != null) {
-      rowWidgets.add(
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: componentToBeEdited(rowIdentifier, model),
-                ),
-              ),
-              isScrollControlled: true,
-            );
-          },
-          child: Icon(
-            Icons.arrow_drop_down,
+     // if(model is PrintModel) {
+        rowWidgets.add(
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) =>
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery
+                              .of(context)
+                              .viewInsets
+                              .bottom,
+                        ),
+                        child: componentToBeEdited(rowIdentifier, model),
+                      ),
+                    ),
+                isScrollControlled: true,
+              );
+            },
+            child: Icon(
+              Icons.arrow_drop_down,
+            ),
           ),
-        ),
-      );
+        );
+     // }
     }
 
-    if (canBeEdited && (model is VisitCardModel || model is FolderModel)) {
+    if (canBeEdited && (model is FolderModel || model is VisitCardModel)) {
       rowWidgets.add(
         GestureDetector(
           onTap: () {
@@ -187,7 +192,7 @@ class ProductTileComponentLine extends StatelessWidget {
                     ),
                     child: UpdateDoubleValueScreen(
                       updateText: 'Dimensiuni:',
-                      printModel: model,
+                      model: model,
                     ),
                   ),
                 ),
@@ -214,7 +219,7 @@ class ProductTileComponentLine extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(8.0),
-      decoration: decorationBox.copyWith(
+      decoration: firstInfoIsBold ? null : decorationBox.copyWith(
           color: color != null ? kColorAccent : kColorBottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,134 +229,7 @@ class ProductTileComponentLine extends StatelessWidget {
   }
 }
 
-class PrintTileComponentLine1 extends StatelessWidget {
-  final List<String> infos;
-  final PrintModel printModel;
 
-  PrintTileComponentLine1({
-    @required this.infos,
-    @required this.printModel,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> rowWidgets = [];
-    for (String info in infos) {
-      rowWidgets.add(Text(
-        info,
-        style: TextStyle(
-          color: Colors.black54,
-        ),
-      ));
-    }
 
-    switch (printModel.colorType) {
-      case ColorType.OneFaceColor:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.red,
-            firstFace: true,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 1,
-          ));
-        }
-        break;
-      case ColorType.OneFaceBlackWhite:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.black,
-            firstFace: true,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 1,
-          ));
-        }
-        break;
-      case ColorType.TwoFacesBlackWhite:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.black,
-            firstFace: true,
-          ));
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.black,
-            firstFace: false,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 2,
-          ));
-        }
-        break;
-      case ColorType.TwoFacesColor:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.red,
-            firstFace: true,
-          ));
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.red,
-            firstFace: false,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 2,
-          ));
-        }
-        break;
-      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.black,
-            firstFace: true,
-          ));
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.red,
-            firstFace: false,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 2,
-          ));
-        }
-        break;
-      case ColorType.OneFaceBlackWhiteOneFaceColorWithFirstColor:
-        {
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.red,
-            firstFace: true,
-          ));
-          rowWidgets.add(ColorFaceRectangle(
-            printModel: printModel,
-            color: Colors.black,
-            firstFace: false,
-          ));
-          rowWidgets.add(IconFace(
-            printModel: printModel,
-            faceNumber: 2,
-          ));
-        }
-        break;
-    }
 
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: rowWidgets,
-      ),
-    );
-  }
-}

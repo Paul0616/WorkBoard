@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/product_data.dart';
-import 'package:work_board/models/prints/print_model.dart';
+
 
 class UpdateDoubleValueScreen extends StatelessWidget {
   final String updateText;
-  final PrintModel printModel;
-  UpdateDoubleValueScreen({this.updateText, this.printModel});
+  final dynamic model;
+  UpdateDoubleValueScreen({this.updateText, this.model});
   @override
   Widget build(BuildContext context) {
-    String textFieldValue1 = printModel.paperFormat.widthL.toString();
-    String textFieldValue2 = printModel.paperFormat.lengthH.toString();
+    String textFieldValue1 = model.paperFormat.widthL.toString();
+    String textFieldValue2 = model.paperFormat.lengthH.toString();
     return Container(
       color: Color(0xFF757575),
       child: Container(
@@ -81,7 +81,7 @@ class UpdateDoubleValueScreen extends StatelessWidget {
                   print('$textFieldValue1 $textFieldValue2');
                   Provider.of<ProductData>(context, listen: false)
                       .updateDimensions(
-                          printModel, textFieldValue1, textFieldValue2);
+                          model, textFieldValue1, textFieldValue2);
                   Navigator.pop(context);
                 },
                 child: Text('Add'),

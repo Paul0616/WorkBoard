@@ -3,7 +3,7 @@ import 'package:work_board/screens/update_list_screen.dart';
 import 'package:work_board/screens/update_single_value_screen.dart';
 
 import '../paper_dimension.dart';
-import '../prints/print_model.dart';
+
 
 List<double> preturiColor80 = [1.4, 1.30, 1.20, 1.1, 0.95];
 List<double> preturiColor115 = [1.6, 1.5, 1.4, 1.3, 1.05];
@@ -74,13 +74,45 @@ const Map<ProductType, String> kProductTypes = {
   ProductType.finishing: 'Finisari',
 };
 
-enum ColorType {
+enum ColorTypePrints {
   OneFaceColor,
   OneFaceBlackWhite,
   TwoFacesColor,
   TwoFacesBlackWhite,
   OneFaceBlackWhiteOneFaceColorWithFirstBlack,
   OneFaceBlackWhiteOneFaceColorWithFirstColor,
+}
+enum ColorTypeBookCovers {
+  Unprinted,
+  OneFaceColor,
+  OneFaceBlackWhite,
+  TwoFacesColor,
+  TwoFacesBlackWhite,
+  OneFaceColorOneBlackWhiteColor,
+}
+
+enum ColorTypeBookInside {
+  Color,
+  BlackWhite,
+  HalfColorHalfBlackWhite,
+}
+
+const Map<ColorTypeBookInside, String> kColorTypeBookInside = {
+  ColorTypeBookInside.Color: 'Color',
+  ColorTypeBookInside.BlackWhite: 'Alb Negru',
+  ColorTypeBookInside.HalfColorHalfBlackWhite: '½ Color + ½ Alb Negru',
+};
+
+enum Binding {
+  SpiralBindingPortrait,
+  SpiralBindingLandscape,
+  Stapling,
+  Bonding,
+}
+enum CoversPlasticizing {
+  None,
+  OneFace,
+  BothFaces,
 }
 
 const Map<PaperType, String> kPaperType = {
@@ -181,18 +213,42 @@ const Map<String, String> kPrintModelRowsLabels = {
   'Costuri': 'Cost/A4:',
 };
 
-String rowToBeModified(String info) {
-  for (String value in kPrintModelRowsLabels.values) {
-    if (info.contains(value)) {
-      return kPrintModelRowsLabels.keys.firstWhere(
-          (k) => kPrintModelRowsLabels[k] == value,
-          orElse: () => null);
+const Map<String, String> kBookModelRowsLabels = {
+  //'Hartie': 'Tip hârtie:',
+  'Tiraj': 'Tiraj',
+  'Format': 'Format',
+  'PagInterior': 'Pagini interior',
+//  'Taiere': 'Adaugă tăieri:',
+//  'Imprimare': 'Imprimare:',
+//  'A3': 'Încadrare:',
+//  'Costuri': 'Cost/A4:',
+};
+
+String rowToBeModified(String info, ProductType product) {
+
+  if(product == ProductType.print) {
+    for (String value in kPrintModelRowsLabels.values) {
+      if (info.contains(value)) {
+        return kPrintModelRowsLabels.keys.firstWhere(
+                (k) => kPrintModelRowsLabels[k] == value,
+            orElse: () => null);
+      }
+    }
+  }
+  if(product == ProductType.book){
+    for (String value in kBookModelRowsLabels.values) {
+      if (info.contains(value)) {
+        return kBookModelRowsLabels.keys.firstWhere(
+                (k) => kBookModelRowsLabels[k] == value,
+            orElse: () => null);
+      }
     }
   }
   return null;
 }
 
-Widget componentToBeEdited(String key, PrintModel printModel) {
+Widget componentToBeEdited(String key, dynamic model) {
+  //print(key);
   switch (key) {
     case 'Hartie':
       {
@@ -203,7 +259,7 @@ Widget componentToBeEdited(String key, PrintModel printModel) {
         return UpdateListScreen(
           listTitle: 'Tip hârtie',
           nomenclatureValues: nomenclature,
-          printModel: printModel,
+          model: model,
           code: NomenclatureCode.paperTypeCode,
         );
       }
@@ -212,7 +268,7 @@ Widget componentToBeEdited(String key, PrintModel printModel) {
       {
         return UpdateSingleValueScreen(
           updateText: 'Tiraj',
-          model: printModel,
+          model: model,
         );
       }
       break;
@@ -226,16 +282,25 @@ Widget componentToBeEdited(String key, PrintModel printModel) {
         return UpdateListScreen(
           listTitle: 'Format hârtie',
           nomenclatureValues: nomenclature,
-          printModel: printModel,
+          model: model,
           code: NomenclatureCode.paperFormatCode,
         );
       }
       break;
-
+    case 'PagInterior':
+      {
+        return UpdateSingleValueScreen(
+          updateText: 'Pagini interior',
+          model: model,
+        );
+      }
+      break;
     default:
       {
         return null;
       }
       break;
   }
+
+
 }
