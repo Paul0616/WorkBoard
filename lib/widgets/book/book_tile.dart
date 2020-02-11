@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:work_board/models/book/book_model.dart';
 
 import 'package:work_board/models/utils/constants.dart';
-import 'package:work_board/models/utils/print_calculator.dart';
+
 import '../product_tile_component_line.dart';
 import '../product_tile_component_line_book.dart';
 import '../product_tile_component_line_book_binding.dart';

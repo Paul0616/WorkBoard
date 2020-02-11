@@ -5,7 +5,6 @@ import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/models/visitCard/visit_card_model.dart';
 import 'package:work_board/models/paper_dimension.dart';
 import 'package:work_board/models/prints/print_model.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 
 class ProductData with ChangeNotifier {
   //ProductType productType = ProductType.print;
