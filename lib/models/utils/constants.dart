@@ -4,7 +4,6 @@ import 'package:work_board/screens/update_single_value_screen.dart';
 
 import '../paper_dimension.dart';
 
-
 List<double> preturiColor80 = [1.4, 1.30, 1.20, 1.1, 0.95];
 List<double> preturiColor115 = [1.6, 1.5, 1.4, 1.3, 1.05];
 List<double> preturiColor150 = [1.7, 1.6, 1.5, 1.4, 1.2];
@@ -199,6 +198,8 @@ enum PaperFormatEnum {
 
 enum NomenclatureCode {
   paperTypeCode,
+  paperTypeInteriorCode,
+  paperTypeCoversCode,
   paperFormatCode,
   productsCode,
 }
@@ -214,32 +215,32 @@ const Map<String, String> kPrintModelRowsLabels = {
 };
 
 const Map<String, String> kBookModelRowsLabels = {
-  //'Hartie': 'Tip hârtie:',
+  'HartieInt': 'Interior hârtie:',
+  'HartieCop': 'Coperți hârtie:',
   'Tiraj': 'Tiraj',
   'Format': 'Format',
   'PagInterior': 'Pagini interior',
 //  'Taiere': 'Adaugă tăieri:',
 //  'Imprimare': 'Imprimare:',
 //  'A3': 'Încadrare:',
-//  'Costuri': 'Cost/A4:',
+  'Costuri': 'Cost/A4:',
 };
 
 String rowToBeModified(String info, ProductType product) {
-
-  if(product == ProductType.print) {
+  if (product == ProductType.print) {
     for (String value in kPrintModelRowsLabels.values) {
       if (info.contains(value)) {
         return kPrintModelRowsLabels.keys.firstWhere(
-                (k) => kPrintModelRowsLabels[k] == value,
+            (k) => kPrintModelRowsLabels[k] == value,
             orElse: () => null);
       }
     }
   }
-  if(product == ProductType.book){
+  if (product == ProductType.book) {
     for (String value in kBookModelRowsLabels.values) {
       if (info.contains(value)) {
         return kBookModelRowsLabels.keys.firstWhere(
-                (k) => kBookModelRowsLabels[k] == value,
+            (k) => kBookModelRowsLabels[k] == value,
             orElse: () => null);
       }
     }
@@ -261,6 +262,34 @@ Widget componentToBeEdited(String key, dynamic model) {
           nomenclatureValues: nomenclature,
           model: model,
           code: NomenclatureCode.paperTypeCode,
+        );
+      }
+      break;
+    case 'HartieInt':
+      {
+        List<String> nomenclature = [];
+        kPaperType.forEach((k, v) {
+          nomenclature.add(v);
+        });
+        return UpdateListScreen(
+          listTitle: 'Tip hârtie',
+          nomenclatureValues: nomenclature,
+          model: model,
+          code: NomenclatureCode.paperTypeInteriorCode,
+        );
+      }
+      break;
+    case 'HartieCop':
+      {
+        List<String> nomenclature = [];
+        kPaperType.forEach((k, v) {
+          nomenclature.add(v);
+        });
+        return UpdateListScreen(
+          listTitle: 'Tip hârtie',
+          nomenclatureValues: nomenclature,
+          model: model,
+          code: NomenclatureCode.paperTypeCoversCode,
         );
       }
       break;
@@ -301,6 +330,4 @@ Widget componentToBeEdited(String key, dynamic model) {
       }
       break;
   }
-
-
 }

@@ -17,12 +17,21 @@ class BookTileComponentLineBinding extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> rowWidgets = [];
     for (String info in infos) {
-      rowWidgets.add(Text(
-        info,
-        style: TextStyle(
-          color: Colors.black54,
-        ),
-      ));
+      if (info == infos[0])
+        rowWidgets.add(Text(
+          info,
+          style: TextStyle(
+            color: Colors.black54,
+          ),
+        ));
+      else
+        rowWidgets.add(Text(
+          info,
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 10,
+          ),
+        ));
     }
     List<Widget> rowIconsWidgets = [];
     rowIconsWidgets.add(Column(

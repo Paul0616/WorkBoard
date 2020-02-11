@@ -41,10 +41,15 @@ class ProductTileComponentLine extends StatelessWidget {
       rowWidgets.add(Text(
         info,
         style: TextStyle(
-          color: Colors.black54,
+          color: (firstInfoIsBold && info == infos.first)
+              ? kColorTop
+              : Colors.black54,
           fontWeight: (firstInfoIsBold && info == infos.first)
               ? FontWeight.bold
               : FontWeight.normal,
+          decoration: (firstInfoIsBold && info == infos.first)
+              ? TextDecoration.underline
+              : null,
         ),
       ));
       rowWidgets.add(Spacer());
@@ -104,33 +109,29 @@ class ProductTileComponentLine extends StatelessWidget {
     String rowIdentifier = rowToBeModified(infos[0], model.type);
 
     if (canBeEdited && rowIdentifier != null) {
-     // if(model is PrintModel) {
-        rowWidgets.add(
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                    SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery
-                              .of(context)
-                              .viewInsets
-                              .bottom,
-                        ),
-                        child: componentToBeEdited(rowIdentifier, model),
-                      ),
-                    ),
-                isScrollControlled: true,
-              );
-            },
-            child: Icon(
-              Icons.arrow_drop_down,
-            ),
+      // if(model is PrintModel) {
+      rowWidgets.add(
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: componentToBeEdited(rowIdentifier, model),
+                ),
+              ),
+              isScrollControlled: true,
+            );
+          },
+          child: Icon(
+            Icons.arrow_drop_down,
           ),
-        );
-     // }
+        ),
+      );
+      // }
     }
 
     if (canBeEdited && (model is FolderModel || model is VisitCardModel)) {
@@ -219,8 +220,10 @@ class ProductTileComponentLine extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(8.0),
-      decoration: firstInfoIsBold ? null : decorationBox.copyWith(
-          color: color != null ? kColorAccent : kColorBottom),
+      decoration: firstInfoIsBold
+          ? null
+          : decorationBox.copyWith(
+              color: color != null ? kColorAccent : kColorBottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: columnWidgets,
@@ -228,8 +231,3 @@ class ProductTileComponentLine extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

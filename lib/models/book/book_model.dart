@@ -15,13 +15,11 @@ class BookModel extends ProductModel {
   CoversPlasticizing coversPlasticizing;
 
   int fitsOnA3 = 1;
+  bool spiralBindingOnly = true;
   String fitsDescription = '';
   int interiorPrints = 0;
-  // int printCountColored = 0;
-//  int printCountGray = 0;
-//  double printPriceColored = 0;
-//  double printPriceGray = 0;
-//  double printCuttingCost = 0;
+  double printPriceInteriorColored = 0;
+  double printPriceInteriorGray = 0;
 
   BookModel(
       {this.paperTypeInside = PaperType.paper80,
@@ -64,59 +62,36 @@ class BookModel extends ProductModel {
     colorTypeBookInside = val;
   }
 
-//  void toggleBothSide() {
-//    bothSidePrinted = !bothSidePrinted;
-//  }
-//
-//  void togglePlasticized() {
-//    isPlasticized = !isPlasticized;
-//  }
-//
-//  void toggleDoubleEdge() {
-//    doubleEdge = !doubleEdge;
-//  }
-//
-//  void togglePatchPocket() {
-//    havePatchPocket = !havePatchPocket;
-//  }
-//
   void refreshPrices() {
     Map<String, String> result = PrintPriceCalculator.getA3FitCount(this);
+    if (paperFormat.format == PaperFormatEnum.A3 ||
+        paperFormat.format == PaperFormatEnum.Banner) {
+      spiralBindingOnly = true;
+      binding = Binding.SpiralBindingPortrait;
+    } else
+      spiralBindingOnly = false;
+
     fitsOnA3 = int.parse(result['fitCount']);
     fitsDescription = result['description'];
     interiorPrints = PrintPriceCalculator.countInteriorsForPrinting(this);
-//    int folderQuantity = quantity * 2;
-//    if (bothSidePrinted) folderQuantity *= 2;
-//    //must multipli with 2 or 4 because calculator get price for A4 and folder is A3
-//    double paperPrice = (bothSidePrinted ? 4 : 2) *
-//        PrintPriceCalculator.getPriceForColorA4(
-//            folderQuantity, PaperType.paper250);
-//
-//    paperPrice = double.parse(paperPrice.toStringAsFixed(2));
-//    printPrice = paperPrice * quantity;
-//
-//    double patchPocketPrice = 0;
-//    if (havePatchPocket) {
-//      if (doubleEdge)
-//        patchPocketPrice = kPatchPocketPrice + 0.5;
-//      else
-//        patchPocketPrice = kPatchPocketPrice;
-//    }
-//    pocketsPrice = patchPocketPrice * quantity;
-//
-//    double foldPrice = kFoldingPrice;
-//    if (doubleEdge) foldPrice *= 2;
-//    foldingPrice = foldPrice * quantity;
-//
-//    double plasticPrice = 0;
-//    if (isPlasticized) {
-//      if (quantity < 25 && quantity > 0)
-//        plasticPrice = 25.0;
-//      else
-//        plasticPrice = kPlasticizingA3Price * quantity;
-//    }
-//    plasticizingPrice = plasticPrice;
-//    value =
-//        quantity * (paperPrice + patchPocketPrice + foldPrice) + plasticPrice;
+    if (colorTypeBookInside == ColorTypeBookInside.HalfColorHalfBlackWhite)
+      interiorPrints = (interiorPrints / 2).ceil();
+
+    printPriceInteriorColored = PrintPriceCalculator.getPriceForColorA4(
+        interiorPrints, paperTypeInside);
+    printPriceInteriorGray = PrintPriceCalculator.getPriceForBlackWhiteA4(
+        interiorPrints, paperTypeInside);
+    switch (colorTypeBookInside) {
+      case ColorTypeBookInside.BlackWhite:
+        value = interiorPrints * printPriceInteriorGray;
+        break;
+      case ColorTypeBookInside.Color:
+        value = interiorPrints * printPriceInteriorColored;
+        break;
+      case ColorTypeBookInside.HalfColorHalfBlackWhite:
+        value = interiorPrints * printPriceInteriorGray +
+            interiorPrints * printPriceInteriorColored;
+        break;
+    }
   }
 }

@@ -188,9 +188,27 @@ class ProductData with ChangeNotifier {
       dynamic model, String type, NomenclatureCode code) {
     if (code == NomenclatureCode.paperTypeCode) {
       kPaperType.forEach((k, v) {
-        if (v == type) model.paperType = k;
+        if (v == type) {
+          model.paperType = k;
+        }
       });
     }
+    if (code == NomenclatureCode.paperTypeInteriorCode) {
+      kPaperType.forEach((k, v) {
+        if (v == type) {
+          model.paperTypeInside = k;
+        }
+      });
+    }
+
+    if (code == NomenclatureCode.paperTypeCoversCode) {
+      kPaperType.forEach((k, v) {
+        if (v == type) {
+          model.paperTypeCovers = k;
+        }
+      });
+    }
+    //paperTypeInside
     if (code == NomenclatureCode.paperFormatCode) {
       kPaperFormat.forEach((k, v) {
         if (v == type) {
@@ -268,13 +286,13 @@ class ProductData with ChangeNotifier {
   }
 
   void updateStaplingBinding(BookModel bookModel) {
-    bookModel.setStaplingBinding();
+    if (!bookModel.spiralBindingOnly) bookModel.setStaplingBinding();
     bookModel.refreshPrices();
     notifyListeners();
   }
 
   void updateBondingBinding(BookModel bookModel) {
-    bookModel.setBondingBinding();
+    if (!bookModel.spiralBindingOnly) bookModel.setBondingBinding();
     bookModel.refreshPrices();
     notifyListeners();
   }

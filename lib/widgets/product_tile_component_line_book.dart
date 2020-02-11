@@ -37,8 +37,6 @@ class PrintTileComponentLineRadio extends StatelessWidget {
                   groupValue: bookModel.colorTypeBookInside.index,
                   activeColor: kColorTop,
                   onChanged: (val) {
-//                    print(bookModel.colorTypeBookInside);
-//                    print(val);
                     Provider.of<ProductData>(context, listen: false)
                         .updateInteriorColor(bookModel, val);
                   },
