@@ -90,6 +90,33 @@ enum ColorTypeBookCovers {
   OneFaceColorOneBlackWhiteColor,
 }
 
+const List<String> kCovertColorIcons1 = [
+  'images/pagN.png',
+  'images/pagCN.png',
+  'images/pagAN.png',
+  'images/pagCC.png',
+  'images/pagAA.png',
+  'images/pagCA.png'
+];
+
+const List<String> kCovertColorIcons2 = [
+  'images/pagN.png',
+  'images/pagCN2.png',
+  'images/pagAN2.png',
+  'images/pagCC2.png',
+  'images/pagAA2.png',
+  'images/pagCA2.png'
+];
+
+const List<String> kCovertColorDoubleIcons = [
+  'images/pagdublaN.png',
+  'images/pagdublaCN.png',
+  'images/pagdublaAN.png',
+  'images/pagdublaCC.png',
+  'images/pagdublaAA.png',
+  'images/pagdublaCA.png'
+];
+
 enum ColorTypeBookInside {
   Color,
   BlackWhite,

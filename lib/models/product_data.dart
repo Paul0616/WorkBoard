@@ -287,6 +287,7 @@ class ProductData with ChangeNotifier {
 
   void updateStaplingBinding(BookModel bookModel) {
     if (!bookModel.spiralBindingOnly) bookModel.setStaplingBinding();
+
     bookModel.refreshPrices();
     notifyListeners();
   }
@@ -316,5 +317,23 @@ class ProductData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+  }
+
+  void nextIcon1(BookModel bookModel) {
+    bookModel.nextStateIcon1();
+    bookModel.refreshPrices();
+    notifyListeners();
+  }
+
+  void nextIcon2(BookModel bookModel) {
+    bookModel.nextStateIcon2();
+    bookModel.refreshPrices();
+    notifyListeners();
+  }
+
+  void nextIconDouble(BookModel bookModel) {
+    bookModel.nextStateIconDouble();
+    bookModel.refreshPrices();
+    notifyListeners();
   }
 }

@@ -39,23 +39,23 @@ class BookTileComponentLineCovers extends StatelessWidget {
         bookModel.binding == Binding.SpiralBindingPortrait) {
       rowIconsWidgets.add(GestureDetector(
         onTap: () {
-//            Provider.of<ProductData>(context, listen: false)
-//                .updateSpiralBinding(bookModel);
+            Provider.of<ProductData>(context, listen: false)
+                .nextIcon1(bookModel);
         },
         child: Image(
           height: 70,
-          image: AssetImage('images/pagCC.png'),
+          image: AssetImage(bookModel.getColorIcon1),
         ),
       ));
 
       rowIconsWidgets.add(GestureDetector(
         onTap: () {
-//            Provider.of<ProductData>(context, listen: false)
-//                .updateSpiralBinding(bookModel);
+            Provider.of<ProductData>(context, listen: false)
+                .nextIcon2(bookModel);
         },
         child: Image(
           height: 70,
-          image: AssetImage('images/pagCC2.png'),
+          image: AssetImage(bookModel.getColorIcon2),
         ),
       ));
     }
@@ -64,12 +64,12 @@ class BookTileComponentLineCovers extends StatelessWidget {
         bookModel.binding == Binding.Bonding) {
       rowIconsWidgets.add(GestureDetector(
         onTap: () {
-//        Provider.of<ProductData>(context, listen: false)
-//            .updateStaplingBinding(bookModel);
+        Provider.of<ProductData>(context, listen: false)
+            .nextIconDouble(bookModel);
         },
         child: Image(
           height: 70,
-          image: AssetImage('images/pagdublaCC.png'),
+          image: AssetImage(bookModel.getColorIconDouble),
         ),
       ));
     }

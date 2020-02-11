@@ -36,6 +36,47 @@ class BookModel extends ProductModel {
     return kPaperType[paperType];
   }
 
+  String get getColorIcon1 => kCovertColorIcons1[ColorTypeBookCovers.values
+      .firstWhere((element) => element == colorTypeBookCovers[0])
+      .index];
+
+  String get getColorIcon2 => kCovertColorIcons2[ColorTypeBookCovers.values
+      .firstWhere((element) => element == colorTypeBookCovers[1])
+      .index];
+
+  String get getColorIconDouble =>
+      kCovertColorDoubleIcons[ColorTypeBookCovers.values
+          .firstWhere((element) => element == colorTypeBookCovers[0])
+          .index];
+
+  void nextStateIconDouble() {
+    colorTypeBookCovers[0] = ColorTypeBookCovers.values[(ColorTypeBookCovers
+                .values
+                .firstWhere((element) => element == colorTypeBookCovers[0])
+                .index +
+            1) %
+        kCovertColorDoubleIcons.length];
+    colorTypeBookCovers[1] = colorTypeBookCovers[0];
+  }
+
+  void nextStateIcon1() {
+    colorTypeBookCovers[0] = ColorTypeBookCovers.values[(ColorTypeBookCovers
+        .values
+        .firstWhere((element) => element == colorTypeBookCovers[0])
+        .index +
+        1) %
+        kCovertColorIcons1.length];
+  }
+
+  void nextStateIcon2() {
+    colorTypeBookCovers[1] = ColorTypeBookCovers.values[(ColorTypeBookCovers
+        .values
+        .firstWhere((element) => element == colorTypeBookCovers[1])
+        .index +
+        1) %
+        kCovertColorIcons2.length];
+  }
+
   void toggleSpiralBinding() {
     switch (binding) {
       case Binding.SpiralBindingPortrait:
@@ -52,10 +93,12 @@ class BookModel extends ProductModel {
 
   void setStaplingBinding() {
     binding = Binding.Stapling;
+    colorTypeBookCovers[1] = colorTypeBookCovers[0];
   }
 
   void setBondingBinding() {
     binding = Binding.Bonding;
+    colorTypeBookCovers[1] = colorTypeBookCovers[0];
   }
 
   void setColorTypeInterior(ColorTypeBookInside val) {
