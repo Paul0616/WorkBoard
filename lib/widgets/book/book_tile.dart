@@ -136,6 +136,28 @@ class BookTile extends StatelessWidget {
             ],
             bookModel: bookModel,
           ),
+          ProductTileComponentLine(
+            infos: [
+              '${kBookModelRowsLabels['Costuri']}',
+              'Color: ${bookModel.printPriceCoverColored.toStringAsFixed(2)} lei',
+              'x ${bookModel.printA4CoverColored} A4',
+              '= ${(bookModel.printPriceCoverColored * bookModel.printA4CoverColored).toStringAsFixed(2)} lei',
+            ],
+            canBeEdited: false,
+            canBeDeleted: false,
+            model: bookModel,
+          ),
+          ProductTileComponentLine(
+            infos: [
+              '${kBookModelRowsLabels['Costuri']}',
+              'A/N: ${bookModel.printPriceCoverGray.toStringAsFixed(2)} lei',
+              'x ${bookModel.printA4CoverGray} A4',
+              '= ${(bookModel.printPriceCoverGray * bookModel.printA4CoverGray).toStringAsFixed(2)} lei',
+            ],
+            canBeEdited: false,
+            canBeDeleted: false,
+            model: bookModel,
+          ),
         ],
       ),
     );

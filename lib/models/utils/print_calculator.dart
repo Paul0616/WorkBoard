@@ -99,74 +99,6 @@ class PrintPriceCalculator {
     return price;
   }
 
-//  int cateIncapGeneralizat(Binding binding, BookModel model) {
-//    int labelWidth = model.paperFormat.widthL.toInt();
-//    int labelHeight = model.paperFormat.lengthH.toInt();
-//    if (binding == Binding.Stapling) labelWidth *= 2;
-//
-//    //WIDTH horizontally on A3 portrait (how many fit on horizontally) exemplu: fitHorizontallyOnA3Portrait=1
-//    int fitHorizontallyOnA3Portrait = (297 / labelWidth).floor();
-//
-//    //how much remain horizontally unprinted | exemplu dimRemainOnHorizontallyA3Portrait=87
-//    int dimRemainOnHorizontallyA3Portrait = 297 % labelWidth;
-//
-//    //HEIGHT vertically on A3 portrait (how many fit on vertically) exemplu: fitVerticallyOnA3Portrait=5
-//    int fitVerticallyOnA3Portrait = (420 / labelHeight).floor();
-//
-//    //how much remain vertically unprinted | exemplu dimRemainOnVerticallyA3Portrait=20
-//    int dimRemainOnVerticallyA3Portrait = 420 % labelHeight;
-//
-//    //how many labels fit in total on the A3 portrait exemplu nr1=5x1=5
-//    int nr1 = fitHorizontallyOnA3Portrait * fitVerticallyOnA3Portrait;
-//
-//    //HEIGHT horizontally on A3 landscape (how many fit on horizontally) | exemplu: fitHorizontallyOnA3landscape=2
-//    int fitHorizontallyOnA3landscape = (420 / labelWidth).floor();
-//
-//    //how much remain horizontally unprinted | exemplu dimRemainOnHorizontallyOnA3Landscape=0
-//    int dimRemainOnHorizontallyOnA3Landscape = 420 % labelWidth;
-//    //dimRemainOnHorizontallyOnA3Landscape = dimRemainOnHorizontallyOnA3Landscape.toFixed(2);
-//
-//    //WIDTH vertically on A3 landscape (how many fit on vertically) | exemplu fitVerticallyOnA3Landscape=3
-//    int fitVerticallyOnA3Landscape = (297 / labelHeight).floor();
-//
-//    //how much remain vertically unprinted | exemplu dimRemainVerticallyOnA3Landscape=57
-//    int dimRemainVerticallyOnA3Landscape = 297 % labelHeight;
-//    //dimRemainVerticallyOnA3Landscape = dimRemainVerticallyOnA3Landscape.toFixed(2);
-//
-//    //how many labels fit in total on the A3 landscape | exemplu n2=2x3=6
-//    int nr2 = fitHorizontallyOnA3landscape * fitVerticallyOnA3Landscape;
-//
-//    int nr = max(nr1, nr2);
-//    int nrplus = 0;
-//    int nrsup1 = 0;
-//    int nrsup2 = 0;
-//    int nrsup = 0;
-//    if (nr == nr1) {
-//      nrsup1 = (dimRemainOnHorizontallyA3Portrait / labelHeight).floor();
-//      nrsup2 = (dimRemainOnVerticallyA3Portrait / labelWidth).floor();
-//
-//      if (nrsup1 >= nrsup2) {
-//        nrplus = (420 / labelWidth).floor();
-//        nrsup = nrsup1 * nrplus;
-//      } else {
-//        nrplus = (297 / labelHeight).floor();
-//        nrsup = nrsup2 * nrplus;
-//      }
-//    } else {
-//      nrsup1 = (dimRemainOnHorizontallyOnA3Landscape / labelHeight).floor();
-//      nrsup2 = (dimRemainVerticallyOnA3Landscape / labelWidth).floor();
-//      if (nrsup1 >= nrsup2) {
-//        nrplus = (297 / labelWidth).floor();
-//        nrsup = nrsup1 * nrplus;
-//      } else {
-//        nrplus = (420 / labelHeight).floor();
-//        nrsup = nrsup2 * nrplus;
-//      }
-//    }
-//    nr = nr + nrsup;
-//    return nr;
-//  }
-
   static Map<String, String> getA3FitCount(dynamic model) {
     int fitCount = 0;
     int labelWidth = model.paperFormat.widthL.toInt();
@@ -329,4 +261,10 @@ class PrintPriceCalculator {
     }
     return countInteriorForPrinting;
   }
+
+//  static int countCoversForPrinting(BookModel bookModel) {
+//    int sheets = 0;
+//    if(bookModel.binding == Binding.Stapling)
+//      sheets = bookModel.
+//  }
 }
