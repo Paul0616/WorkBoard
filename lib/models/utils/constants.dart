@@ -34,6 +34,18 @@ const kColorAccent = Colors.orangeAccent;
 
 const kNomenclatureHeight = 250.0;
 
+
+const Map<PaperType, double> kUnprinted = {
+  PaperType.paper250: 0.5,
+  PaperType.paper150: 0.3,
+  PaperType.paper115: 0.25,
+  PaperType.paper80: 0.1,
+  PaperType.paperSpecial: 1,
+  PaperType.paperSticker: 0,
+};
+
+
+
 const decorationBox = BoxDecoration(
   border: Border(
     bottom: BorderSide(

@@ -22,6 +22,7 @@ class BookModel extends ProductModel {
   double printPriceInteriorGray = 0;
   double printPriceCoverColored = 0;
   double printPriceCoverGray = 0;
+  double priceUnprinted = 0;
   int printA4CoverColored = 0;
   int printA4CoverGray = 0;
 
@@ -56,9 +57,11 @@ class BookModel extends ProductModel {
   void coversPrint() {
     int colored = 0;
     int grays = 0;
+    int unprinted = 0;
     for (ColorTypeBookCovers face in colorTypeBookCovers) {
       switch (face) {
         case ColorTypeBookCovers.Unprinted:
+          unprinted +=1;
           break;
         case ColorTypeBookCovers.OneFaceColor:
           colored += 1;
@@ -78,6 +81,7 @@ class BookModel extends ProductModel {
           break;
       }
     }
+    priceUnprinted = unprinted * kUnprinted[paperTypeCovers] * quantity;
     if (fitsOnA3 != 0) {
       printA4CoverColored = (colored * quantity / fitsOnA3).ceil();
       if (binding != Binding.Stapling) printA4CoverColored *= 2;
@@ -152,7 +156,7 @@ class BookModel extends ProductModel {
   }
 
   void refreshPrices() {
-    Map<String, String> result = PrintPriceCalculator.getA3FitCount(this);
+    Fits result = PrintPriceCalculator.getA3FitCount(this);
     if (paperFormat.format == PaperFormatEnum.A3 ||
         paperFormat.format == PaperFormatEnum.Banner) {
       spiralBindingOnly = true;
@@ -160,8 +164,8 @@ class BookModel extends ProductModel {
     } else
       spiralBindingOnly = false;
 
-    fitsOnA3 = int.parse(result['fitCount']);
-    fitsDescription = result['description'];
+    fitsOnA3 = result.fitsCount;//int.parse(result['fitCount']);
+    fitsDescription = result.toString();//result['description'];
     interiorPrints = PrintPriceCalculator.countInteriorsForPrinting(this);
     if (colorTypeBookInside == ColorTypeBookInside.HalfColorHalfBlackWhite)
       interiorPrints = (interiorPrints / 2).ceil();
@@ -184,6 +188,6 @@ class BookModel extends ProductModel {
     }
     coversPrint();
     value += printA4CoverColored * printPriceCoverColored +
-        printA4CoverGray * printPriceCoverGray;
+        printA4CoverGray * printPriceCoverGray + priceUnprinted;
   }
 }

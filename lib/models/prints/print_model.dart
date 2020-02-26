@@ -164,11 +164,11 @@ class PrintModel extends ProductModel {
   }
 
   void refreshPrices() {
-    Map<String, String> result = PrintPriceCalculator.getA3FitCount(this);
-    fitsOnA3 = int.parse(result['fitCount']);
-    fitsDescription = result['description'];
-    printCuttingCost = double.parse(result['printCuttingCost']);
-    cuts = result['cut'];
+   Fits result = PrintPriceCalculator.getA3FitCount(this);
+    fitsOnA3 = result.fitsCount;//int.parse(result['fitCount']);
+    fitsDescription = result.toString();//result['description'];
+    printCuttingCost = result.cuts * kCuttingPrice;//double.parse(result['printCuttingCost']);
+    cuts = '${result.cuts} taieri';//result['cut'];
 
     int prints = _printsCountA4();
     printCountColored = _printsCountColorA4(prints);
