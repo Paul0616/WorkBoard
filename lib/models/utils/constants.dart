@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:work_board/screens/update_list_screen.dart';
 import 'package:work_board/screens/update_single_value_screen.dart';
 
@@ -33,6 +34,8 @@ const kColorTop = Colors.red;
 const kColorAccent = Colors.orangeAccent;
 
 const kNomenclatureHeight = 250.0;
+
+
 
 
 const Map<PaperType, double> kUnprinted = {
@@ -85,7 +88,7 @@ const Map<ProductType, String> kProductTypes = {
   ProductType.finishing: 'Finisari',
 };
 
-enum ColorTypePrints {
+enum ColorTypeBothSides {
   OneFaceColor,
   OneFaceBlackWhite,
   TwoFacesColor,
@@ -133,6 +136,11 @@ enum ColorTypeBookInside {
   Color,
   BlackWhite,
   HalfColorHalfBlackWhite,
+}
+
+enum ColorTypeOneSide {
+  Color,
+  BlackWhite,
 }
 
 const Map<ColorTypeBookInside, String> kColorTypeBookInside = {

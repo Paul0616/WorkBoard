@@ -6,7 +6,7 @@ import 'package:work_board/models/utils/print_calculator.dart';
 class PrintModel extends ProductModel {
   PaperType paperType;
   PaperDimensions paperFormat;
-  ColorTypePrints colorType;
+  ColorTypeBothSides colorType;
   bool addCut;
   int printCountColored = 0;
   int printCountGray = 0;
@@ -28,8 +28,8 @@ class PrintModel extends ProductModel {
   }
 
   bool _isDoubleSided() {
-    return colorType != ColorTypePrints.OneFaceBlackWhite &&
-        colorType != ColorTypePrints.OneFaceColor;
+    return colorType != ColorTypeBothSides.OneFaceBlackWhite &&
+        colorType != ColorTypeBothSides.OneFaceColor;
   }
 
   bool _isBanner() {
@@ -37,13 +37,13 @@ class PrintModel extends ProductModel {
   }
 
   bool _isColored() {
-    return colorType != ColorTypePrints.TwoFacesBlackWhite &&
-        colorType != ColorTypePrints.OneFaceBlackWhite;
+    return colorType != ColorTypeBothSides.TwoFacesBlackWhite &&
+        colorType != ColorTypeBothSides.OneFaceBlackWhite;
   }
 
   bool _bothSidesAreTheSame() {
-    return colorType == ColorTypePrints.TwoFacesColor ||
-        colorType == ColorTypePrints.TwoFacesBlackWhite;
+    return colorType == ColorTypeBothSides.TwoFacesColor ||
+        colorType == ColorTypeBothSides.TwoFacesBlackWhite;
   }
 
   void toggleAddCut() {
@@ -52,60 +52,60 @@ class PrintModel extends ProductModel {
 
   void toggleTwoFaces() {
     switch (colorType) {
-      case ColorTypePrints.OneFaceColor:
-        colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+      case ColorTypeBothSides.OneFaceColor:
+        colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor;
         break;
-      case ColorTypePrints.OneFaceBlackWhite:
-        colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+      case ColorTypeBothSides.OneFaceBlackWhite:
+        colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
         break;
-      case ColorTypePrints.TwoFacesColor:
-        colorType = ColorTypePrints.OneFaceColor;
+      case ColorTypeBothSides.TwoFacesColor:
+        colorType = ColorTypeBothSides.OneFaceColor;
         break;
-      case ColorTypePrints.TwoFacesBlackWhite:
-        colorType = ColorTypePrints.OneFaceBlackWhite;
+      case ColorTypeBothSides.TwoFacesBlackWhite:
+        colorType = ColorTypeBothSides.OneFaceBlackWhite;
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
-        colorType = ColorTypePrints.OneFaceBlackWhite;
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
+        colorType = ColorTypeBothSides.OneFaceBlackWhite;
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor:
-        colorType = ColorTypePrints.OneFaceColor;
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+        colorType = ColorTypeBothSides.OneFaceColor;
         break;
     }
   }
 
   void toggleFaceColor(bool firstFace) {
     switch (colorType) {
-      case ColorTypePrints.OneFaceColor:
-        colorType = ColorTypePrints.OneFaceBlackWhite;
+      case ColorTypeBothSides.OneFaceColor:
+        colorType = ColorTypeBothSides.OneFaceBlackWhite;
         break;
-      case ColorTypePrints.OneFaceBlackWhite:
-        colorType = ColorTypePrints.OneFaceColor;
+      case ColorTypeBothSides.OneFaceBlackWhite:
+        colorType = ColorTypeBothSides.OneFaceColor;
         break;
-      case ColorTypePrints.TwoFacesColor:
+      case ColorTypeBothSides.TwoFacesColor:
         if (firstFace) {
-          colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+          colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
         } else {
-          colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+          colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor;
         }
         break;
-      case ColorTypePrints.TwoFacesBlackWhite:
+      case ColorTypeBothSides.TwoFacesBlackWhite:
         if (firstFace) {
-          colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor;
+          colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor;
         } else {
-          colorType = ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
+          colorType = ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack;
         }
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
         if (firstFace)
-          colorType = ColorTypePrints.TwoFacesColor;
+          colorType = ColorTypeBothSides.TwoFacesColor;
         else
-          colorType = ColorTypePrints.TwoFacesBlackWhite;
+          colorType = ColorTypeBothSides.TwoFacesBlackWhite;
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor:
         if (firstFace)
-          colorType = ColorTypePrints.TwoFacesBlackWhite;
+          colorType = ColorTypeBothSides.TwoFacesBlackWhite;
         else
-          colorType = ColorTypePrints.TwoFacesColor;
+          colorType = ColorTypeBothSides.TwoFacesColor;
         break;
     }
   }
@@ -175,13 +175,11 @@ class PrintModel extends ProductModel {
     print('REFRESH');
     printCountGray = _printsCountBlackWhiteA4(prints);
 
-    printPriceColored = double.parse(
-        PrintPriceCalculator.getPriceForColorA4(printCountColored, paperType)
-            .toStringAsFixed(2));
+    printPriceColored = prices.forPrint(type: paperType, pages: printCountColored, color: ColorTypeOneSide.Color);
+        //double.parse(PrintPriceCalculator.getPriceForColorA4(printCountColored, paperType).toStringAsFixed(2));
 
-    printPriceGray = double.parse(
-        PrintPriceCalculator.getPriceForBlackWhiteA4(printCountGray, paperType)
-            .toStringAsFixed(2));
+    printPriceGray = prices.forPrint(type: paperType, pages: printCountGray, color: ColorTypeOneSide.BlackWhite);
+        //double.parse(PrintPriceCalculator.getPriceForBlackWhiteA4(printCountGray, paperType).toStringAsFixed(2));
 
     value = printCountColored * printPriceColored +
         printCountGray * printPriceGray +

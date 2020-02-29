@@ -27,7 +27,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
     }
 
     switch (printModel.colorType) {
-      case ColorTypePrints.OneFaceColor:
+      case ColorTypeBothSides.OneFaceColor:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,
@@ -40,7 +40,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
           ));
         }
         break;
-      case ColorTypePrints.OneFaceBlackWhite:
+      case ColorTypeBothSides.OneFaceBlackWhite:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,
@@ -53,7 +53,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
           ));
         }
         break;
-      case ColorTypePrints.TwoFacesBlackWhite:
+      case ColorTypeBothSides.TwoFacesBlackWhite:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,
@@ -71,7 +71,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
           ));
         }
         break;
-      case ColorTypePrints.TwoFacesColor:
+      case ColorTypeBothSides.TwoFacesColor:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,
@@ -89,7 +89,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
           ));
         }
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstBlack:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,
@@ -107,7 +107,7 @@ class PrintTileComponentLinePrintsColor extends StatelessWidget {
           ));
         }
         break;
-      case ColorTypePrints.OneFaceBlackWhiteOneFaceColorWithFirstColor:
+      case ColorTypeBothSides.OneFaceBlackWhiteOneFaceColorWithFirstColor:
         {
           rowWidgets.add(ColorFaceRectangle(
             printModel: printModel,

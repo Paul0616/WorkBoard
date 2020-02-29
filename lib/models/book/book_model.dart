@@ -93,10 +93,10 @@ class BookModel extends ProductModel {
       printA4CoverGray = (grays * quantity * 3).ceil();
     }
 
-    printPriceCoverColored = PrintPriceCalculator.getPriceForColorA4(
-        printA4CoverColored, paperTypeCovers);
-    printPriceCoverGray = PrintPriceCalculator.getPriceForBlackWhiteA4(
-        printA4CoverGray, paperTypeCovers);
+    printPriceCoverColored =  prices.forPrint(type: paperTypeCovers, pages: printA4CoverColored, color: ColorTypeOneSide.Color);
+    //PrintPriceCalculator.getPriceForColorA4(printA4CoverColored, paperTypeCovers);
+    printPriceCoverGray = prices.forPrint(type: paperTypeCovers, pages: printA4CoverGray, color: ColorTypeOneSide.BlackWhite);
+        //PrintPriceCalculator.getPriceForBlackWhiteA4(printA4CoverGray, paperTypeCovers);
   }
 
   void nextStateIconDouble() {
@@ -170,10 +170,10 @@ class BookModel extends ProductModel {
     if (colorTypeBookInside == ColorTypeBookInside.HalfColorHalfBlackWhite)
       interiorPrints = (interiorPrints / 2).ceil();
 
-    printPriceInteriorColored = PrintPriceCalculator.getPriceForColorA4(
-        interiorPrints, paperTypeInside);
-    printPriceInteriorGray = PrintPriceCalculator.getPriceForBlackWhiteA4(
-        interiorPrints, paperTypeInside);
+    printPriceInteriorColored = prices.forPrint(type: paperTypeInside, pages: interiorPrints, color: ColorTypeOneSide.Color);
+        //PrintPriceCalculator.getPriceForColorA4(interiorPrints, paperTypeInside);
+    printPriceInteriorGray = prices.forPrint(type: paperTypeInside, pages: interiorPrints, color: ColorTypeOneSide.BlackWhite);
+        //PrintPriceCalculator.getPriceForBlackWhiteA4(interiorPrints, paperTypeInside);
     switch (colorTypeBookInside) {
       case ColorTypeBookInside.BlackWhite:
         value = interiorPrints * printPriceInteriorGray;

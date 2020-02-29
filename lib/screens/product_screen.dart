@@ -10,6 +10,7 @@ import '../models/utils/constants.dart';
 class ProductScreen extends StatelessWidget {
   // final productType = ProductType.print;
 
+
   @override
   Widget build(BuildContext context) {
     var products = Provider.of<ProductData>(context);

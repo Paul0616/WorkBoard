@@ -1,4 +1,5 @@
 import 'package:work_board/models/utils/constants.dart';
+import 'package:work_board/models/utils/prices.dart';
 
 class ProductModel {
   ProductType type;
@@ -6,6 +7,7 @@ class ProductModel {
   double value = 0;
   int quantity = 0;
   bool isActive = true;
+  Prices prices = Prices();
 
   bool _showAlert = false;
 

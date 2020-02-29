@@ -136,7 +136,7 @@ class ProductData with ChangeNotifier {
         products.add(PrintModel(
           paperType: PaperType.paper80,
           paperFormat: kDefaultFormats[0],
-          colorType: ColorTypePrints.OneFaceColor,
+          colorType: ColorTypeBothSides.OneFaceColor,
           addCut: false,
         ));
         break;

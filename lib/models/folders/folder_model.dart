@@ -1,5 +1,5 @@
 import 'package:work_board/models/product_model.dart';
-import 'package:work_board/models/utils/print_calculator.dart';
+
 
 import '../utils/constants.dart';
 
@@ -40,9 +40,8 @@ class FolderModel extends ProductModel {
     int folderQuantity = quantity * 2;
     if (bothSidePrinted) folderQuantity *= 2;
     //must multipli with 2 or 4 because calculator get price for A4 and folder is A3
-    double paperPrice = (bothSidePrinted ? 4 : 2) *
-        PrintPriceCalculator.getPriceForColorA4(
-            folderQuantity, PaperType.paper250);
+    double paperPrice = (bothSidePrinted ? 4 : 2) * prices.forPrint(type: PaperType.paper250, pages: folderQuantity, color: ColorTypeOneSide.Color);
+        //PrintPriceCalculator.getPriceForColorA4(folderQuantity, PaperType.paper250);
 
     paperPrice = double.parse(paperPrice.toStringAsFixed(2));
     printPrice = paperPrice * quantity;
