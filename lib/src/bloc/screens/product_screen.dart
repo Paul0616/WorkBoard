@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:work_board/models/product_model.dart';
 import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/screens/update_list_screen.dart';
 import 'package:work_board/src/bloc/blocs/product_bloc.dart';
 import 'package:work_board/src/bloc/widgets/products_list.dart';
 
 
-class ProductScreen extends StatefulWidget {
-  @override
-  _ProductScreenState createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
+class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _bloc = Provider.of<ProductBloc>(context);
@@ -20,12 +16,15 @@ class _ProductScreenState extends State<ProductScreen> {
     kProductTypes.values.forEach((v) {
       nomenclature.add(v);
     });
+
     return Scaffold(
       backgroundColor: kColorTop,
       floatingActionButton: FloatingActionButton(
         backgroundColor: kColorAccent,
         child: Icon(Icons.add),
         onPressed: () {
+
+          _bloc.inChangeProductType.add(ProductType.book);
           //  _bloc.addProduct(products.currentType);
         },
       ),
@@ -101,14 +100,11 @@ class _ProductScreenState extends State<ProductScreen> {
                             SizedBox(
                               height: 10.0,
                             ),
-                            StreamBuilder<ProductType>(
+                            StreamBuilder(
                               stream: _bloc.currentType,
                               builder: (context,
                                   AsyncSnapshot<ProductType> snapshot) {
-                                if(snapshot.hasError)
-                                  print('HAS ERROR');
-                                if (snapshot.hasData) {
-                                  print('HAS DATA');
+                                if(snapshot.hasData){
                                   return Text(
                                     kProductTypes[snapshot.data],
                                     maxLines: 2,
@@ -119,19 +115,29 @@ class _ProductScreenState extends State<ProductScreen> {
                                       color: Colors.white,
                                     ),
                                   );
-                                } else {
-                                  return Text('-');
-                                }
+                                } else return Text('-');
                               },
                             ),
-                            Text(
-                              'Valoare: ',
-                              //${products.allCurrentTypeValue.toStringAsFixed(2)} lei (${products.productCount} produse)',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
+                            StreamBuilder(
+                              stream: _bloc.products,
+                              builder: (context,
+                                  AsyncSnapshot<List<dynamic>> snapshot) {
+                                if (snapshot.hasData) {
+                                  print(snapshot.data);
+                                  var productValues = snapshot.data
+                                      .map((product) => product.value)
+                                      .toList();
+                                  return Text(
+                                    'Valoare: ${productValues.fold(0, (sum, value) => sum + value).toStringAsFixed(2)} lei (${snapshot.data.length} produse)',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                } else
+                                  return Text('0.00');
+                              },
                             ),
                           ],
                         ),
@@ -192,17 +198,15 @@ class _ProductScreenState extends State<ProductScreen> {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
                   )),
-              child: StreamBuilder<ProductType>(
+              child:  StreamBuilder(
                 stream: _bloc.currentType,
-                builder: (context, AsyncSnapshot<ProductType> snapshot) {
-                  if(snapshot.hasData) {
-                    print('HAs data');
+                builder: (context,
+                    AsyncSnapshot<ProductType> snapshot) {
+                  if(snapshot.hasData){
                     return ProductsList(
                       productType: snapshot.data,
                     );
-                  } else return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  } else return Container();
                 },
               ),
             ),
@@ -212,3 +216,4 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 }
+

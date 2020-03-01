@@ -27,11 +27,15 @@ class ProductBloc extends Bloc {
     ),
   ];
 
+  //ProductType _currentType = ProductType.print;
+
   //Create controllers that allows this stream to be listened to multiple times.
   final StreamController<List<dynamic>> _productsController =
       StreamController<List<dynamic>>.broadcast();
   final StreamController<ProductType> _changeProductTypeController =
       StreamController<ProductType>.broadcast();
+  final StreamController<ProductType> _currentTypeController =
+  StreamController<ProductType>.broadcast();
 
 //  final StreamController<dynamic> _addProductController =
 //      StreamController<dynamic>();
@@ -43,12 +47,14 @@ class ProductBloc extends Bloc {
    --------------------------- */
   StreamSink<List<dynamic>> get _inProducts => _productsController.sink;
   StreamSink<ProductType> get inChangeProductType => _changeProductTypeController.sink;
+  StreamSink<ProductType> get _inCurrentType => _currentTypeController.sink;
 
   /* ---------------------------
     OUTPUT stream. This one will be used within our view to display the products.
    --------------------------- */
   Stream<List<dynamic>> get products => _productsController.stream;
-  Stream<ProductType> get currentType => _changeProductTypeController.stream;
+  Stream<ProductType> get currentType => _currentTypeController.stream;
+
 
   ProductBloc(this._dataSource) {
     _loadPrices();
@@ -69,6 +75,7 @@ class ProductBloc extends Bloc {
 
   void getCurrentProducts(ProductType type) {
     print(type);
+    _inCurrentType.add(type);
     _inProducts.add(
         _products.where((product) => product.type == type).toList());
   }
@@ -78,6 +85,7 @@ class ProductBloc extends Bloc {
     print('DISPOSE');
     _productsController?.close();
     _changeProductTypeController?.close();
+    _currentTypeController?.close();
 //    _addProductController?.close();
 //    _updateProductController?.close();
     _dataSource.dispose();
