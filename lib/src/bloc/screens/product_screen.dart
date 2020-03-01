@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_board/models/product_data.dart';
+import 'package:work_board/models/utils/constants.dart';
 import 'package:work_board/screens/update_list_screen.dart';
-import 'package:work_board/widgets/products_list.dart';
-
-import '../models/utils/constants.dart';
-
-class ProductScreen extends StatelessWidget {
-  // final productType = ProductType.print;
+import 'package:work_board/src/bloc/blocs/product_bloc.dart';
+import 'package:work_board/src/bloc/widgets/products_list.dart';
 
 
+class ProductScreen extends StatefulWidget {
+  @override
+  _ProductScreenState createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
-    var products = Provider.of<ProductData>(context);
+    var _bloc = Provider.of<ProductBloc>(context);
     List<String> nomenclature = [];
-    kProductTypes.forEach((k, v) {
+    kProductTypes.values.forEach((v) {
       nomenclature.add(v);
     });
     return Scaffold(
@@ -24,8 +26,7 @@ class ProductScreen extends StatelessWidget {
         backgroundColor: kColorAccent,
         child: Icon(Icons.add),
         onPressed: () {
-          Provider.of<ProductData>(context, listen: false)
-              .addProduct(products.currentType);
+          //  _bloc.addProduct(products.currentType);
         },
       ),
       body: Column(
@@ -100,18 +101,32 @@ class ProductScreen extends StatelessWidget {
                             SizedBox(
                               height: 10.0,
                             ),
-                            Text(
-                              kProductTypes[products.currentType],
-                              maxLines: 2,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontFamily: 'Yanone Kaffeesatz',
-                                fontSize: 50,
-                                color: Colors.white,
-                              ),
+                            StreamBuilder<ProductType>(
+                              stream: _bloc.currentType,
+                              builder: (context,
+                                  AsyncSnapshot<ProductType> snapshot) {
+                                if(snapshot.hasError)
+                                  print('HAS ERROR');
+                                if (snapshot.hasData) {
+                                  print('HAS DATA');
+                                  return Text(
+                                    kProductTypes[snapshot.data],
+                                    maxLines: 2,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                      fontFamily: 'Yanone Kaffeesatz',
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                } else {
+                                  return Text('-');
+                                }
+                              },
                             ),
                             Text(
-                              'Valoare: ${products.allCurrentTypeValue.toStringAsFixed(2)} lei (${products.productCount} produse)',
+                              'Valoare: ',
+                              //${products.allCurrentTypeValue.toStringAsFixed(2)} lei (${products.productCount} produse)',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w300,
@@ -149,7 +164,8 @@ class ProductScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${products.allValue.toStringAsFixed(2)}',
+                          '0.00',
+                          //'${products.allValue.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontFamily: 'Yanone Kaffeesatz',
                             fontSize: 30.0,
@@ -176,8 +192,18 @@ class ProductScreen extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
                   )),
-              child: ProductsList(
-                productType: products.currentType,
+              child: StreamBuilder<ProductType>(
+                stream: _bloc.currentType,
+                builder: (context, AsyncSnapshot<ProductType> snapshot) {
+                  if(snapshot.hasData) {
+                    print('HAs data');
+                    return ProductsList(
+                      productType: snapshot.data,
+                    );
+                  } else return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
           )

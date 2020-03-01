@@ -116,12 +116,12 @@ class ProductData with ChangeNotifier {
     }
   }
 
-  void deletePrintModel(dynamic model) {
+  void deleteProduct(dynamic model) {
     products.remove(model);
     notifyListeners();
   }
 
-  void addPrint(ProductType type) {
+  void addProduct(ProductType type) {
     switch (type) {
       case ProductType.book:
         products.add(BookModel(

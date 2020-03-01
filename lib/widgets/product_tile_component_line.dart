@@ -61,7 +61,7 @@ class ProductTileComponentLine extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Provider.of<ProductData>(context, listen: false)
-                .deletePrintModel(model);
+                .deleteProduct(model);
           },
           child: Icon(
             Icons.delete,

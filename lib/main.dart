@@ -1,23 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:work_board/models/product_data.dart';
-import 'package:work_board/screens/product_screen.dart';
-
+import 'src/with_provider/main.dart' as var1;
+import 'src/bloc/main.dart' as bloc;
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => ProductData(),
-        ),
-      ],
-      child: MaterialApp(
-        theme: ThemeData(
-            primaryColor: Colors.green,
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.black54))),
-        debugShowCheckedModeBanner: false,
-        home: ProductScreen(),
-      ),
-    ),
-  );
+  final flavor = Architecture.bloc;
+  print('\n\n======== Running: $flavor ========\n\n');
+
+  switch (flavor) {
+    case Architecture.provider:
+      var1.main();
+      break;
+    case Architecture.bloc:
+      bloc.main();
+      break;
+  }
+}
+
+enum Architecture {
+  provider,
+  bloc,
 }

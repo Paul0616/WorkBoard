@@ -32,4 +32,6 @@ class ProductModel {
   double pricePerUnit() {
     return quantity != 0 ? value / quantity : 0;
   }
+
+
 }
