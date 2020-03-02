@@ -56,9 +56,9 @@ class ProductBloc extends Bloc {
   final StreamController<CurrentTypeProducts> _productsController =
       StreamController<CurrentTypeProducts>.broadcast();
   final StreamController<ProductType> _changeProductTypeController =
-      StreamController<ProductType>.broadcast();
+      StreamController<ProductType>(); //.broadcast();
   final StreamController<ProductType> _addProductController =
-      StreamController<ProductType>.broadcast();
+      StreamController<ProductType>(); //.broadcast();
 
 //  final StreamController<dynamic> _updateProductController =
 //      StreamController<dynamic>();

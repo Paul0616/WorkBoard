@@ -6,6 +6,10 @@ import 'package:work_board/models/utils/print_calculator.dart';
 import 'package:work_board/src/bloc/blocs/product_bloc.dart';
 import 'package:work_board/src/bloc/repository/hardcoded_repository.dart';
 
+import 'package:mockito/mockito.dart';
+
+class MockProductBloc extends Mock implements ProductBloc {}
+
 void main() {
   test('unit test pentru calcul cate formate lxh incap pe A3', () {
     final model = PrintModel(
@@ -53,6 +57,8 @@ void main() {
     final bloc = ProductBloc(
       HardcodedPricesRepository(),
     );
+    // final bloc = MockProductBloc();
+    bloc.inChangeProductType.add(ProductType.print);
 
     await expectLater(
       bloc.currentProducts,
