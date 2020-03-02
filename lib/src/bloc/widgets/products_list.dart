@@ -10,40 +10,34 @@ import 'package:work_board/widgets/prints/print_tile.dart';
 import 'package:work_board/widgets/vistCards/visit_card_tile.dart';
 
 class ProductsList extends StatelessWidget {
-  final productType;
-
-  ProductsList({this.productType});
-
   @override
   Widget build(BuildContext context) {
     var _bloc = Provider.of<ProductBloc>(context);
-    print(productType);
     return StreamBuilder(
-      stream: _bloc.products,
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+      stream: _bloc.currentProducts,
+      builder: (context, AsyncSnapshot<CurrentTypeProducts> snapshot) {
         if (snapshot.hasData) {
-          print('hasdata ${snapshot.data}');
           return ListView.builder(
             itemBuilder: (context, index) {
-              switch (productType) {
+              switch (snapshot.data.productType) {
                 case ProductType.print:
                   return PrintTile(
-                    printModel: snapshot.data[index],
+                    printModel: snapshot.data.products[index],
                   );
                   break;
                 case ProductType.visit_card:
                   return VisitCardTile(
-                    visitCardModel: snapshot.data[index],
+                    visitCardModel: snapshot.data.products[index],
                   );
                   break;
                 case ProductType.folder:
                   return FolderTile(
-                    folderModel: snapshot.data[index],
+                    folderModel: snapshot.data.products[index],
                   );
                   break;
                 case ProductType.book:
                   return BookTile(
-                    bookModel: snapshot.data[index],
+                    bookModel: snapshot.data.products[index],
                   );
                   break;
                 default:
@@ -54,7 +48,7 @@ class ProductsList extends StatelessWidget {
                   break;
               }
             },
-            itemCount: snapshot.data.length,
+            itemCount: snapshot.data.products.length,
           );
         } else {
           return Container();

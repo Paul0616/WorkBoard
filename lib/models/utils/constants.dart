@@ -35,9 +35,6 @@ const kColorAccent = Colors.orangeAccent;
 
 const kNomenclatureHeight = 250.0;
 
-
-
-
 const Map<PaperType, double> kUnprinted = {
   PaperType.paper250: 0.5,
   PaperType.paper150: 0.3,
@@ -46,8 +43,6 @@ const Map<PaperType, double> kUnprinted = {
   PaperType.paperSpecial: 1,
   PaperType.paperSticker: 0,
 };
-
-
 
 const decorationBox = BoxDecoration(
   border: Border(
@@ -272,6 +267,14 @@ const Map<String, String> kBookModelRowsLabels = {
 //  'A3': 'Încadrare:',
   'Costuri': 'Cost/A4:',
 };
+
+ProductType stringToProductType(String title) {
+  ProductType type;
+  kProductTypes.forEach((k, v) {
+    if (v == title) type = k;
+  });
+  return type;
+}
 
 String rowToBeModified(String info, ProductType product) {
   if (product == ProductType.print) {
