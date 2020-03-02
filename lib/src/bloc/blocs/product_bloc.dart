@@ -47,7 +47,6 @@ class ProductBloc extends Bloc {
       _products
           .where((product) => product.type == stringToProductType(title))
           .map((product) => product.value)
-          .toList()
           .fold(0, (sum, value) => sum + value) !=
       0;
 

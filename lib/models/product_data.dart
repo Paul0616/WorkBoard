@@ -39,46 +39,25 @@ class ProductData with ChangeNotifier {
 
   ProductType currentType = ProductType.print;
 
-  dynamic get currentProducts {
-    return products.where((product) => product.type == currentType).toList();
-  }
+  List<dynamic> get currentProducts =>
+      products.where((product) => product.type == currentType).toList();
 
-  int get productCount {
-    return currentProducts.length;
-    //return prints.length;
-  }
+  int get productCount => currentProducts.length;
 
-  double get allCurrentTypeValue {
-    double sum = 0;
+  double get allCurrentTypeValue => currentProducts
+      .map((product) => product.value)
+      .fold(0, (sum, value) => sum + value);
 
-    for (dynamic product in currentProducts) {
-      sum += product.value;
-    }
-    return sum;
-  }
+  bool productHaveValue(String title) =>
+      products
+          .where((product) => product.type == stringToProductType(title))
+          .map((product) => product.value)
+          .fold(0, (sum, value) => sum + value) !=
+      0;
 
-  bool productHaveValue(String title) {
-    double sum = 0;
-    ProductType type;
-    kProductTypes.forEach((k, v) {
-      if (v == title) type = k;
-    });
-    List<dynamic> prod =
-        products.where((product) => product.type == type).toList();
-    for (dynamic product in prod) {
-      sum += product.value;
-    }
-    return sum != 0;
-  }
-
-  double get allValue {
-    double sum = 0;
-
-    for (dynamic product in products) {
-      sum += product.value;
-    }
-    return sum;
-  }
+  double get allValue => products
+      .map((product) => product.value)
+      .fold(0, (sum, value) => sum + value);
 
   void changeCurrentProduct(String productType) {
     kProductTypes.forEach((k, v) {
